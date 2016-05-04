@@ -1,6 +1,8 @@
 package utils;
 
-import data.Message;
+import data.MessagePublish;
+
+import java.util.ArrayList;
 
 /**
  * Interface of the utils of the Middleware.
@@ -11,9 +13,9 @@ public interface PSPortInterface {
 
     void connect(String address, int port);
     void disconnect();
-    Message subscribe(String [] topic);
-    void unsubscribe(String [] topic);
+    ArrayList<MessagePublish> subscribe(String [] topics);
+    void unsubscribe(String [] topics);
     void publish(String topic, byte [] data);
-    Message getLastSample(String topic);
+    MessagePublish getLastSample(String topic);
 
 }

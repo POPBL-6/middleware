@@ -79,4 +79,12 @@ public class SocketSSL {
         }
     }
 
+    public Mailbox<byte[]> getInputMailbox() {
+        return inputMailbox;
+    }
+
+    public Mailbox<byte[]> getOutputMailbox() {
+        return outputMailbox;
+    }
+
 }

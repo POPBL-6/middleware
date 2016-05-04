@@ -16,6 +16,10 @@ public class MessageToSubscriber extends MessagePublish {
         this.sender = sender;
     }
 
+    public MessageToSubscriber(byte [] data) {
+        // TODO: Parse message.
+    }
+
     public String getSender() {
         return sender;
     }
