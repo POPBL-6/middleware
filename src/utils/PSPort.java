@@ -1,7 +1,7 @@
 package utils;
 
 import data.Message;
-import data.MessageSubscribe;
+import data.MessagePublish;
 
 import java.util.HashMap;
 
@@ -12,7 +12,7 @@ import java.util.HashMap;
  */
 public class PSPort implements PSPortInterface {
 
-    private HashMap<String, Message> lastSample;
+    private HashMap<String, MessagePublish> lastSample;
 
     public PSPort() {
 

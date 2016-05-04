@@ -1,7 +1,9 @@
 package data;
 
 /**
- * Created by urko on 4/05/16.
+ * Message sent to unsubscribe from topics.
+ *
+ * @author urko
  */
 public class MessageUnsubscribe extends MessageSubscribe {
 
