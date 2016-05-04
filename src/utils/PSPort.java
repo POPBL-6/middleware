@@ -1,6 +1,7 @@
 package utils;
 
 import data.Message;
+import data.MessageSubscribe;
 
 import java.util.HashMap;
 
@@ -39,7 +40,7 @@ public class PSPort implements PSPortInterface {
 
     }
 
-    public void publish(String topic, Object data) {
+    public void publish(String topic, byte [] data) {
 
     }
 

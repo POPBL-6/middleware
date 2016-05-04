@@ -13,7 +13,7 @@ public interface PSPortInterface {
     void disconnect();
     Message subscribe(String [] topic);
     void unsubscribe(String [] topic);
-    void publish(String topic, Object data);
+    void publish(String topic, byte [] data);
     Message getLastSample(String topic);
 
 }

@@ -7,8 +7,12 @@ package data;
  */
 public abstract class Message {
 
-    private String charset;
-    private String topic;
+    public final int MESSAGE_PUBLISH = 0;
+    public final int MESSAGE_TO_SUBSCRIBER = 1;
+    public final int MESSAGE_SUBSCRIBE = 2;
+    public final int MESSAGE_UNSUBSCRIBE = 3;
+
+    private String charset = "UTF-8";
 
     public String getCharset() {
         return charset;
@@ -16,14 +20,6 @@ public abstract class Message {
 
     public void setCharset(String charset) {
         this.charset = charset;
-    }
-
-    public String getTopic() {
-        return topic;
-    }
-
-    public void setTopic(String topic) {
-        this.topic = topic;
     }
 
 }
