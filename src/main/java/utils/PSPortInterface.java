@@ -1,6 +1,8 @@
 package utils;
 
 import data.MessagePublish;
+import data.MessageToSubscriber;
+import socket.Connection;
 
 import java.util.ArrayList;
 
@@ -11,11 +13,11 @@ import java.util.ArrayList;
  */
 public interface PSPortInterface {
 
-    void connect(String address, int port);
+    void setCommunicationManager(Connection communicationManager);
     void disconnect();
-    ArrayList<MessagePublish> subscribe(String [] topics);
+    void subscribe(String [] topics);
     void unsubscribe(String [] topics);
     void publish(String topic, byte [] data);
-    MessagePublish getLastSample(String topic);
+    MessageToSubscriber getLastSample(String topic);
 
 }

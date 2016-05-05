@@ -17,7 +17,7 @@ public class MessageSubscribe extends Message {
         return topics;
     }
 
-    public void setTopics(String [] topics) {
+    public void setTopics(String ... topics) {
         this.topics = topics;
     }
 

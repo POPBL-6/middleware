@@ -2,26 +2,23 @@ package socket;
 
 import data.Mailbox;
 
-import javax.net.ssl.SSLSocket;
-import javax.net.ssl.SSLSocketFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * This class will create a SSL Socket to connect the client with the middleware.
- *
- * TODO: Generate certificate with keytool. Public and private keys.
+ * Abstract class of Connections with sockets.
  *
  * @author urko
  */
-public class SocketSSL {
+public abstract class Connection implements ConnectionInterface {
 
-    private final Logger logger = Logger.getLogger(SocketSSL.class.getName());
-    private SSLSocket socket;
+    private final Logger logger = Logger.getLogger(SSLConnection.class.getName());
+    private Socket socket;
     private BufferedReader input;
     private PrintWriter output;
     private Mailbox<byte []> inputMailbox;
@@ -29,23 +26,12 @@ public class SocketSSL {
     private Receiver receiver;
     private Sender sender;
 
-    public SocketSSL(String address, int port) {
+    public void createMailbox() {
         inputMailbox = new Mailbox<>(10);
         outputMailbox = new Mailbox<>(10);
-        createSocket(address, port);
-        createInputOutput();
     }
 
-    private void createSocket(String address, int port) {
-        SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
-        try {
-            socket = (SSLSocket) factory.createSocket(address, port);
-        } catch (IOException e) {
-            logger.log(Level.SEVERE, "ERROR: Can't create a SSL socket at port " + port + ".");
-        }
-    }
-
-    private void createInputOutput() {
+    public void createInputOutput() {
         try {
             input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             output = new PrintWriter(socket.getOutputStream(), true);
@@ -54,14 +40,14 @@ public class SocketSSL {
         }
     }
 
-    private void createThreads() {
+    public void createThreads() {
         sender = new Sender(output, outputMailbox);
         receiver = new Receiver(input, inputMailbox);
         sender.start();
         receiver.start();
     }
 
-    public void endThreads() {
+    public void endConnection() {
         sender.kill();
         receiver.kill();
         try {
@@ -87,4 +73,11 @@ public class SocketSSL {
         return outputMailbox;
     }
 
+    public Socket getSocket() {
+        return socket;
+    }
+
+    public void setSocket(Socket socket) {
+        this.socket = socket;
+    }
 }

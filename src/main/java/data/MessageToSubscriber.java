@@ -29,7 +29,7 @@ public class MessageToSubscriber extends MessagePublish {
     }
 
     /**
-     * Structure of the message: <TT><TM><CL><TL><SL><CHARSET><TOPIC><SENDER><TYPE><DATA><TIMESTAMP>
+     * Structure of the message: <TT><TM><CL><TL><SL><CHARSET><TOPIC><SENDER><DATA><TIMESTAMP>
      *
      * @return message
      */

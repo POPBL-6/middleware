@@ -39,6 +39,7 @@ public class Receiver extends Thread {
     }
 
     private byte [] receive() throws IOException {
+        // TODO: Refactor method.
         ArrayList<Byte> inputData = new ArrayList<>();
         int totalSize = input.read();
         for (int i = 0; i < totalSize; i++) {

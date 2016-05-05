@@ -1,35 +1,28 @@
 package utils;
 
 import data.*;
-import socket.SocketSSL;
+import socket.Connection;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Utils from the Middleware.
+ * Abstract class of PSPort.
  *
  * @author urko
  */
-public class PSPort implements PSPortInterface {
+public abstract class PSPort implements PSPortInterface {
 
-    private SocketSSL socket;
+    private Connection socket;
     private Mailbox<byte []> inputMailbox;
     private Mailbox<byte []> outputMailbox;
     private HashMap<String, MessageToSubscriber> lastSamples;
 
-    public PSPort(String address, int port) {
-        connect(address, port);
-    }
-
-    public void connect(String address, int port) {
-        socket = new SocketSSL(address, port);
-        inputMailbox = socket.getInputMailbox();
-        outputMailbox = socket.getOutputMailbox();
+    public void setCommunicationManager(Connection communicationManager) {
+        setSocket(communicationManager);
     }
 
     public void disconnect() {
-        socket.endThreads();
+        socket.endConnection();
     }
 
     /**
@@ -38,21 +31,17 @@ public class PSPort implements PSPortInterface {
      * @param topics
      * @return lastMessage
      */
-    public ArrayList<MessagePublish> subscribe(String [] topics) {
+    public void subscribe(String [] topics) {
         MessageSubscribe message = new MessageSubscribe(topics);
-        ArrayList<MessagePublish> array = null;
         try {
             inputMailbox.send(message.toByteArray());
-            array = new ArrayList<>();
             for (int i = 0; i < topics.length; i++) {
                 MessageToSubscriber newMessage = new MessageToSubscriber(outputMailbox.receive());
-                array.add(newMessage);
                 lastSamples.put(newMessage.getTopic(), newMessage);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return array;
     }
 
     public void unsubscribe(String [] topics) {
@@ -79,4 +68,27 @@ public class PSPort implements PSPortInterface {
         return lastSamples.get(topic);
     }
 
+    public Connection getSocket() {
+        return socket;
+    }
+
+    public void setSocket(Connection socket) {
+        this.socket = socket;
+    }
+
+    public Mailbox<byte[]> getInputMailbox() {
+        return inputMailbox;
+    }
+
+    public void setInputMailbox(Mailbox<byte[]> inputMailbox) {
+        this.inputMailbox = inputMailbox;
+    }
+
+    public Mailbox<byte[]> getOutputMailbox() {
+        return outputMailbox;
+    }
+
+    public void setOutputMailbox(Mailbox<byte[]> outputMailbox) {
+        this.outputMailbox = outputMailbox;
+    }
 }

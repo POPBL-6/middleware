@@ -25,16 +25,16 @@ public class MessagePublish extends Message {
         this.topic = topic;
     }
 
-    public byte[] getData() {
+    public byte [] getData() {
         return data;
     }
 
-    public void setData(byte[] data) {
+    public void setData(byte [] data) {
         this.data = data;
     }
 
     /**
-     * Structure of the message: <TM><CL><TL><CHARSET><TOPIC><TYPE><DATA>
+     * Structure of the message: <TM><CL><TL><CHARSET><TOPIC><DATA>
      *
      * @return message
      */
