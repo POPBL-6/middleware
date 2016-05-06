@@ -23,6 +23,10 @@ public class SSLConnection extends Connection {
     private final Logger logger = Logger.getLogger(SSLConnection.class.getName());
 
     public SSLConnection(String address, int port) {
+        init(address, port);
+    }
+
+    public void init(String address, int port) {
         createMailbox();
         createSocket(address, port);
         createInputOutput();

@@ -15,6 +15,10 @@ public class TCPConnection extends Connection {
     private final Logger logger = Logger.getLogger(SSLConnection.class.getName());
 
     public TCPConnection(String address, int port) {
+        init(address, port);
+    }
+
+    public void init(String address, int port) {
         createMailbox();
         createSocket(address, port);
         createInputOutput();
