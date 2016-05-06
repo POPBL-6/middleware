@@ -73,10 +73,6 @@ public abstract class Connection implements ConnectionInterface {
         return outputMailbox;
     }
 
-    public Socket getSocket() {
-        return socket;
-    }
-
     public void setSocket(Socket socket) {
         this.socket = socket;
     }

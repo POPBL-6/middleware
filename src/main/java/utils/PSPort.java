@@ -12,17 +12,13 @@ import java.util.HashMap;
  */
 public abstract class PSPort implements PSPortInterface {
 
-    private Connection socket;
+    private Connection connection;
     private Mailbox<byte []> inputMailbox;
     private Mailbox<byte []> outputMailbox;
     private HashMap<String, MessageToSubscriber> lastSamples;
 
-    public void setCommunicationManager(Connection communicationManager) {
-        setSocket(communicationManager);
-    }
-
     public void disconnect() {
-        socket.endConnection();
+        connection.endConnection();
     }
 
     /**
@@ -68,27 +64,27 @@ public abstract class PSPort implements PSPortInterface {
         return lastSamples.get(topic);
     }
 
-    public Connection getSocket() {
-        return socket;
+    public Connection getConnection() {
+        return connection;
     }
 
-    public void setSocket(Connection socket) {
-        this.socket = socket;
+    protected void setConnection(Connection connection) {
+        this.connection = connection;
     }
 
-    public Mailbox<byte[]> getInputMailbox() {
+    protected Mailbox<byte[]> getInputMailbox() {
         return inputMailbox;
     }
 
-    public void setInputMailbox(Mailbox<byte[]> inputMailbox) {
+    protected void setInputMailbox(Mailbox<byte[]> inputMailbox) {
         this.inputMailbox = inputMailbox;
     }
 
-    public Mailbox<byte[]> getOutputMailbox() {
+    protected Mailbox<byte[]> getOutputMailbox() {
         return outputMailbox;
     }
 
-    public void setOutputMailbox(Mailbox<byte[]> outputMailbox) {
+    protected void setOutputMailbox(Mailbox<byte[]> outputMailbox) {
         this.outputMailbox = outputMailbox;
     }
 }

@@ -13,7 +13,6 @@ import java.util.ArrayList;
  */
 public interface PSPortInterface {
 
-    void setCommunicationManager(Connection communicationManager);
     void disconnect();
     void subscribe(String [] topics);
     void unsubscribe(String [] topics);

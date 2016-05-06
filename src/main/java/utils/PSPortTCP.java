@@ -8,9 +8,9 @@ import socket.TCPConnection;
 public class PSPortTCP extends PSPort {
 
     public PSPortTCP(String address, int port) {
-        setCommunicationManager(new TCPConnection(address, port));
-        setInputMailbox(getSocket().getInputMailbox());
-        setOutputMailbox(getSocket().getOutputMailbox());
+        setConnection(new TCPConnection(address, port));
+        setInputMailbox(getConnection().getInputMailbox());
+        setOutputMailbox(getConnection().getOutputMailbox());
     }
 
 }
