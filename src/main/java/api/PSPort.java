@@ -1,4 +1,4 @@
-package utils;
+package api;
 
 import data.*;
 import socket.Connection;
@@ -15,7 +15,7 @@ public abstract class PSPort implements PSPortInterface {
     private Connection connection;
     private Mailbox<byte []> inputMailbox;
     private Mailbox<byte []> outputMailbox;
-    private HashMap<String, MessageToSubscriber> lastSamples;
+    private HashMap<String, MessagePublication> lastSamples;
 
     public void disconnect() {
         connection.endConnection();
@@ -27,20 +27,23 @@ public abstract class PSPort implements PSPortInterface {
      * @param topics
      * @return lastMessage
      */
-    public void subscribe(String [] topics) {
+    public void subscribe(String ... topics) {
         MessageSubscribe message = new MessageSubscribe(topics);
         try {
             inputMailbox.send(message.toByteArray());
+            /*
+             * TODO: NAIN NAIN, no bloquees esperando
             for (int i = 0; i < topics.length; i++) {
-                MessageToSubscriber newMessage = new MessageToSubscriber(outputMailbox.receive());
+                MessagePublication newMessage = new MessagePublication(outputMailbox.receive());
                 lastSamples.put(newMessage.getTopic(), newMessage);
             }
+            */
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    public void unsubscribe(String [] topics) {
+    public void unsubscribe(String ... topics) {
         MessageUnsubscribe message = new MessageUnsubscribe(topics);
         try {
             inputMailbox.send(message.toByteArray());
@@ -54,13 +57,13 @@ public abstract class PSPort implements PSPortInterface {
         MessagePublish message = new MessagePublish(topic, data);
         try {
             inputMailbox.send(message.toByteArray());
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             // TODO: Logger and interruption.
             e.printStackTrace();
         }
     }
 
-    public MessageToSubscriber getLastSample(String topic) {
+    public MessagePublication getLastSample(String topic) {
         return lastSamples.get(topic);
     }
 

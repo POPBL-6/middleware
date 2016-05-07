@@ -12,6 +12,10 @@ public class MessageSubscribe extends Message {
     public MessageSubscribe(String ... topics) {
         this.topics = topics;
     }
+    
+    public MessageSubscribe(byte[] data) {
+        //TODO
+    }
 
     public String [] getTopics() {
         return topics;

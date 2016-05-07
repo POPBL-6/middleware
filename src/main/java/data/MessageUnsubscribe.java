@@ -8,7 +8,11 @@ package data;
 public class MessageUnsubscribe extends MessageSubscribe {
 
     public MessageUnsubscribe(String ... topics) {
-        this.setTopics(topics);
+    	super(topics);
+    }
+    
+    public MessageUnsubscribe(byte[] data) {
+        super(data);
     }
 
     /**
