@@ -1,6 +1,7 @@
 package data;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import utils.ArrayUtils;
 
@@ -31,7 +32,7 @@ public class MessagePublish extends Message {
     }
 
     public MessagePublish(String topic, Object data) throws IOException {
-    	this(topic,ArrayUtils.serialize(data),Message.DEFAULT_CHARSET);
+    	this(topic,ArrayUtils.serialize(data));
     }
     
     public MessagePublish(byte [] origin) throws Exception {
@@ -93,7 +94,7 @@ public class MessagePublish extends Message {
      * @return message
      * @throws Exception 
      */
-    public byte [] toByteArray() throws Exception {
+    public byte [] toByteArray() throws UnsupportedEncodingException {
     	byte[] out;
 		byte[] charsetBytes = getCharset().getBytes("ASCII");
 		byte[] topicBytes = getTopic().getBytes(getCharset());

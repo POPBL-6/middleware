@@ -1,5 +1,7 @@
 package data;
 
+import java.io.UnsupportedEncodingException;
+
 import utils.ArrayUtils;
 
 /**
@@ -75,11 +77,11 @@ public class MessagePublication extends MessagePublish {
 	}
 
     /**
-     * Structure of the message: <TT><TM><CL><TL><SL><CHARSET><TOPIC><SENDER><TIMESTAMP><DATA>
+     * Structure of the message: <TM><CL><TL><SL><CHARSET><TOPIC><SENDER><TIMESTAMP><DATA>
      *
      * @return message
      */
-    public byte [] toByteArray() throws Exception {
+    public byte [] toByteArray() throws UnsupportedEncodingException {
     	byte[] out;
 		byte[] charsetBytes = getCharset().getBytes("ASCII");
 		byte[] topicBytes = getTopic().getBytes(getCharset());

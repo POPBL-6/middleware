@@ -6,22 +6,11 @@ package data;
  * @author urko
  */
 public class MessageUnsubscribe extends MessageSubscribe {
-
-    public MessageUnsubscribe(String ... topics) {
-    	super(topics);
+	public MessageUnsubscribe(String ... topics) {
+        super(topics);
     }
     
-    public MessageUnsubscribe(byte[] data) {
-        super(data);
+    public MessageUnsubscribe(byte[] origin) throws Exception {
+    	super(origin);
     }
-
-    /**
-     * Structure of the message: <TT><TM><CL><CHARSET>(<TL><TOPIC>)
-     *
-     * @return message
-     */
-    public byte [] toByteArray() {
-        return null;
-    }
-
 }

@@ -3,6 +3,7 @@ package api;
 import data.*;
 import socket.Connection;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
 /**
@@ -40,7 +41,9 @@ public abstract class PSPort implements PSPortInterface {
             */
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        } catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
     }
 
     public void unsubscribe(String ... topics) {
@@ -50,7 +53,10 @@ public abstract class PSPort implements PSPortInterface {
         } catch (InterruptedException e) {
             // TODO: Logger and interruption.
             e.printStackTrace();
-        }
+        } catch (UnsupportedEncodingException e) {
+			// TODO
+			e.printStackTrace();
+		}
     }
 
     public void publish(String topic, byte [] data) {
