@@ -6,9 +6,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.Timeout;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertSame;
+import static junit.framework.TestCase.*;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Gorka Olalde on 9/5/16.
@@ -45,7 +44,7 @@ public class MailboxTests {
         assertSame("Expected to return the same element", element, retrievedElement);
     }
 
-    @Test(expected = InterruptedException.class)
+    @Test
     public void testEmptyLocking() throws InterruptedException {
         Thread lockingThread = new Thread(() -> {
             try {
@@ -55,11 +54,10 @@ public class MailboxTests {
             }
         });
         lockingThread.start();
-        lockingThread.join(100);
-        assertFalse("Expected to lock the thread", threadCompleted);
+        assertTrue("Expected to be locked in receive", lockingThread.isAlive());
     }
 
-    @Test(expected = InterruptedException.class)
+    @Test
     public void testFullLocking() throws InterruptedException {
         Object element = new Object();
         testSubject.send(element);
@@ -72,7 +70,7 @@ public class MailboxTests {
 
         });
         lockingThread.start();
-        lockingThread.join(100);
+        assertTrue("Expected to be locked in send", lockingThread.isAlive());
     }
 
     @Test
@@ -85,7 +83,7 @@ public class MailboxTests {
         assertEquals("Expected to not count as a new element", expectedSize, size);
     }
 
-    @Test(expected = InterruptedException.class)
+    @Test
     public void testNullObjectRetrieve() throws InterruptedException {
         Object fakeElement = null;
         testSubject.send(fakeElement);
@@ -94,10 +92,12 @@ public class MailboxTests {
                 testSubject.receive();
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            } catch (IndexOutOfBoundsException e) {
+                fail("Index out of bounds received");
             }
         });
         lockingThread.start();
-        lockingThread.join(100);
+        assertTrue("Expected to be locked in receive", lockingThread.isAlive());
     }
 
 }
