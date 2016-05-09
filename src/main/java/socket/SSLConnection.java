@@ -1,7 +1,12 @@
 package socket;
 
+import data.Mailbox;
+
 import javax.net.ssl.SSLSocketFactory;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,7 +22,7 @@ public class SSLConnection extends Connection {
     private final Logger logger = Logger.getLogger(SSLConnection.class.getName());
 
     public SSLConnection(String address, int port) {
-        init(address, port);
+
     }
 
     public void init(String address, int port) {

@@ -26,12 +26,18 @@ public abstract class Connection implements ConnectionInterface {
     private Mailbox<byte []> outputMailbox;
     private Receiver receiver;
     private Sender sender;
+    private String address;
+    private int port;
+
 
     public void createMailbox() {
         inputMailbox = new Mailbox<>(10);
         outputMailbox = new Mailbox<>(10);
     }
-
+    public void setMailboxes(Mailbox<byte []> inputMailbox, Mailbox<byte []> outputMailbox) {
+        this.inputMailbox = inputMailbox;
+        this.outputMailbox = outputMailbox;
+    }
     public void createInputOutput() {
         try {
             input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -41,12 +47,18 @@ public abstract class Connection implements ConnectionInterface {
         }
     }
 
+    public void setStreams(BufferedReader input, PrintWriter output) {
+        this.input = input;
+        this.output = output;
+    }
+
     public void createThreads() {
         sender = new Sender(output, outputMailbox);
         receiver = new Receiver(input, inputMailbox);
         sender.start();
         receiver.start();
     }
+
 
     public void endConnection() {
         sender.kill();
@@ -63,6 +75,70 @@ public abstract class Connection implements ConnectionInterface {
             logger.error("Error when closing the socket", e);
             e.printStackTrace();
         }
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public BufferedReader getInput() {
+        return input;
+    }
+
+    public void setInput(BufferedReader input) {
+        this.input = input;
+    }
+
+    public void setInputMailbox(Mailbox<byte[]> inputMailbox) {
+        this.inputMailbox = inputMailbox;
+    }
+
+    public static Logger getLogger() {
+        return logger;
+    }
+
+    public PrintWriter getOutput() {
+        return output;
+    }
+
+    public void setOutput(PrintWriter output) {
+        this.output = output;
+    }
+
+    public void setOutputMailbox(Mailbox<byte[]> outputMailbox) {
+        this.outputMailbox = outputMailbox;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public Receiver getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(Receiver receiver) {
+        this.receiver = receiver;
+    }
+
+    public Sender getSender() {
+        return sender;
+    }
+
+    public void setSender(Sender sender) {
+        this.sender = sender;
+    }
+
+    public Socket getSocket() {
+        return socket;
     }
 
     public Mailbox<byte[]> getInputMailbox() {
