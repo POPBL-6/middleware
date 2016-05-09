@@ -45,38 +45,34 @@ public class MailboxTests {
         assertSame("Expected to return the same element", element, retrievedElement);
     }
 
-    @Test
+    @Test(expected = InterruptedException.class)
     public void testEmptyLocking() throws InterruptedException {
         Thread lockingThread = new Thread(() -> {
             try {
                 testSubject.receive();
-
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            threadCompleted = true;
         });
         lockingThread.start();
-        Thread.sleep(100);
+        lockingThread.join(100);
         assertFalse("Expected to lock the thread", threadCompleted);
     }
 
-    @Test
+    @Test(expected = InterruptedException.class)
     public void testFullLocking() throws InterruptedException {
         Object element = new Object();
         testSubject.send(element);
         Thread lockingThread = new Thread(() -> {
             try {
                 testSubject.send(element);
-
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            threadCompleted = true;
+
         });
         lockingThread.start();
-        Thread.sleep(100);
-        assertFalse("Expected to lock the thread", threadCompleted);
+        lockingThread.join(100);
     }
 
     @Test
@@ -89,22 +85,19 @@ public class MailboxTests {
         assertEquals("Expected to not count as a new element", expectedSize, size);
     }
 
-    @Test
+    @Test(expected = InterruptedException.class)
     public void testNullObjectRetrieve() throws InterruptedException {
         Object fakeElement = null;
         testSubject.send(fakeElement);
         Thread lockingThread = new Thread(() -> {
             try {
                 testSubject.receive();
-
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            threadCompleted = true;
         });
         lockingThread.start();
-        Thread.sleep(100);
-        assertFalse("Expected to lock the thread", threadCompleted);
+        lockingThread.join(100);
     }
 
 }
