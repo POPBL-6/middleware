@@ -21,11 +21,13 @@ public class Mailbox<T> {
     }
 
     public void send(T msg) throws InterruptedException {
-        lleno.acquire();
-        lock.acquire();
-        data.add(msg);
-        lock.release();
-        vacio.release();
+        if (msg != null) {
+            lleno.acquire();
+            lock.acquire();
+            data.add(msg);
+            lock.release();
+            vacio.release();
+        }
     }
 
     public T receive() throws InterruptedException {
