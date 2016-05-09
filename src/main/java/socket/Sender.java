@@ -1,6 +1,8 @@
 package socket;
 
 import data.Mailbox;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.PrintWriter;
 
@@ -8,7 +10,7 @@ import java.io.PrintWriter;
  * Created by urko on 4/05/16.
  */
 public class Sender extends Thread {
-
+    private final static Logger logger = LogManager.getLogger(Sender.class);
     private PrintWriter output;
     private Mailbox<byte []> outputMailbox;
     private boolean stop;
@@ -25,10 +27,10 @@ public class Sender extends Thread {
             try {
                 send(outputMailbox.receive());
             } catch (InterruptedException e) {
-                // TODO: Logger and interruption.
-                e.printStackTrace();
+               logger.error("Sender thread interrumpted", e);
             }
         }
+        logger.info("Sender thread stopped");
     }
 
     private void send(byte [] data) {
