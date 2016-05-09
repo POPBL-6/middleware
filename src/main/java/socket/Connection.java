@@ -1,14 +1,15 @@
 package socket;
 
 import data.Mailbox;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 /**
  * Abstract class of Connections with sockets.
@@ -17,7 +18,7 @@ import java.util.logging.Logger;
  */
 public abstract class Connection implements ConnectionInterface {
 
-    private final Logger logger = Logger.getLogger(SSLConnection.class.getName());
+    private final static Logger logger = LogManager.getLogger(Connection.class);
     private Socket socket;
     private BufferedReader input;
     private PrintWriter output;
@@ -36,7 +37,7 @@ public abstract class Connection implements ConnectionInterface {
             input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             output = new PrintWriter(socket.getOutputStream(), true);
         } catch (IOException e) {
-            logger.log(Level.SEVERE, "ERROR: Can't establish an input / output connection.");
+            logger.error("ERROR: Can't establish an input / output connection.", e);
         }
     }
 
@@ -54,13 +55,12 @@ public abstract class Connection implements ConnectionInterface {
             sender.join();
             receiver.join();
         } catch (InterruptedException e) {
-            // TODO: Logger.
-            e.printStackTrace();
+            logger.error("Error, thread was interrumpted while trying to end connections", e);
         }
         try {
             socket.close();
         } catch (IOException e) {
-            // TODO: Logger.
+            logger.error("Error when closing the socket", e);
             e.printStackTrace();
         }
     }
