@@ -1,6 +1,8 @@
 package api;
 
 import data.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import socket.Connection;
 
 import java.io.UnsupportedEncodingException;
@@ -12,6 +14,8 @@ import java.util.HashMap;
  * @author urko
  */
 public abstract class PSPort implements PSPortInterface {
+
+    private static final Logger logger = LogManager.getLogger(PSPort.class);
 
     private Connection connection;
     private Mailbox<byte []> inputMailbox;
@@ -40,9 +44,9 @@ public abstract class PSPort implements PSPortInterface {
             }
             */
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.error("InterruptedException caught on subscribe method", e);
         } catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+            logger.error("UnsupportedEncodingException caught on subscribe method", e);
 		}
     }
 
@@ -51,11 +55,9 @@ public abstract class PSPort implements PSPortInterface {
         try {
             inputMailbox.send(message.toByteArray());
         } catch (InterruptedException e) {
-            // TODO: Logger and interruption.
-            e.printStackTrace();
+            logger.error("InterruptedException caught on unsubscribe method", e);
         } catch (UnsupportedEncodingException e) {
-			// TODO
-			e.printStackTrace();
+			logger.error("UnsupportedEncodingException caught on unsubscribe method", e);
 		}
     }
 
@@ -64,8 +66,7 @@ public abstract class PSPort implements PSPortInterface {
         try {
             inputMailbox.send(message.toByteArray());
         } catch (Exception e) {
-            // TODO: Logger and interruption.
-            e.printStackTrace();
+            logger.error("Exception caught on publish method", e);
         }
     }
 
