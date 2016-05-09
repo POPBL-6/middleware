@@ -1,4 +1,4 @@
-package tests;
+package tests.dataTests;
 
 import data.Mailbox;
 import org.junit.Before;
