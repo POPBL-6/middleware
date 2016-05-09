@@ -38,4 +38,12 @@ public class Mailbox<T> {
         return value;
     }
 
+    public int getElementQty() throws InterruptedException {
+        int numElements = 0;
+        lock.acquire();
+        numElements = data.size();
+        lock.release();
+        return numElements;
+    }
+
 }
