@@ -1,6 +1,8 @@
 package socket;
 
 import data.Mailbox;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
  */
 public class Receiver extends Thread {
 
+    private final static Logger logger = LogManager.getLogger(Receiver.class);
     private BufferedReader input;
     private Mailbox<byte []> inputMailbox;
     private boolean stop;
@@ -29,11 +32,9 @@ public class Receiver extends Thread {
             try {
                 inputMailbox.send(receive());
             } catch (InterruptedException e) {
-                // TODO: Logger and interruption.
-                e.printStackTrace();
+                logger.error("Receiver thread interrumpted", e);
             } catch (IOException e) {
-                // TODO: Logger.
-                e.printStackTrace();
+                logger.error("IO Error in receiver thread", e);
             }
         }
     }
