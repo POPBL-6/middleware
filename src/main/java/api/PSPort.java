@@ -9,9 +9,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
 /**
- * Abstract class of PSPort.
- *
- * @author urko
+ * Abstract class of PSPort. This class is the main part of the API.
  */
 public abstract class PSPort implements PSPortInterface {
 
@@ -36,8 +34,7 @@ public abstract class PSPort implements PSPortInterface {
         MessageSubscribe message = new MessageSubscribe(topics);
         try {
             inputMailbox.send(message.toByteArray());
-            /*
-             * TODO: NAIN NAIN, no bloquees esperando
+            /* TODO: NAIN NAIN, no bloquees esperando
             for (int i = 0; i < topics.length; i++) {
                 MessagePublication newMessage = new MessagePublication(outputMailbox.receive());
                 lastSamples.put(newMessage.getTopic(), newMessage);

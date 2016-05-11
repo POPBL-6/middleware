@@ -7,8 +7,6 @@ import utils.ArrayUtils;
 
 /**
  * Message sent from the publisher to the broker with the publication.
- *
- * @author urko
  */
 public class MessagePublish extends Message {
 

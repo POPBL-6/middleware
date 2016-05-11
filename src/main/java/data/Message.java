@@ -2,8 +2,6 @@ package data;
 
 /**
  * Abstract class of the messages that are exchange between clients and broker.
- *
- * @author urko
  */
 public abstract class Message {
 
@@ -11,9 +9,7 @@ public abstract class Message {
     public static final byte MESSAGE_PUBLICATION = 1;
     public static final byte MESSAGE_SUBSCRIBE = 2;
     public static final byte MESSAGE_UNSUBSCRIBE = 3;
-
     public static final String DEFAULT_CHARSET = "UTF-8";
-    
     private String charset;
 
     public String getCharset() {
@@ -23,12 +19,18 @@ public abstract class Message {
     public void setCharset(String charset) {
         this.charset = charset;
     }
-    
+
+    /***
+     * This method returns a Message object from a byte array.
+     *
+     * @param origin
+     * @return message
+     */
     public static Message fromByteArray(byte[] origin) {
     	Message msg = null;
-    	if(origin!=null && origin.length>0) {
+    	if ((origin != null) && (origin.length > 0)) {
     		try {
-    			switch(origin[0]) {
+    			switch (origin[0]) {
         		case MESSAGE_PUBLISH:
         			msg = new MessagePublish(origin);
         			break;
@@ -42,11 +44,11 @@ public abstract class Message {
     				msg = new MessageUnsubscribe(origin);	
     				break;
         		}
-    		} catch(Exception e) {
-    			//TODO
+    		} catch (Exception e) {
+    			// TODO: Catch the correct exception.
     		}
     	}
-    	if(msg==null) {
+    	if (msg == null) {
     		throw new IllegalArgumentException("Bad data format");
     	}
     	return msg;

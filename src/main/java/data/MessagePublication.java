@@ -6,14 +6,21 @@ import utils.ArrayUtils;
 
 /**
  * Message sent from the broker to the subscriber with the publication from the publisher.
- *
- * @author urko
  */
 public class MessagePublication extends MessagePublish {
 
     private String sender;
     private long timestamp;
-    
+
+    /**
+     * This constructor creates a complete message to publish in the server.
+     *
+     * @param charset
+     * @param data
+     * @param topic
+     * @param sender
+     * @param timestamp
+     */
     public MessagePublication(String charset, byte[] data, String topic, String sender, long timestamp) {
         setCharset(charset);
         setData(data);
@@ -22,8 +29,15 @@ public class MessagePublication extends MessagePublish {
         setTimestamp(timestamp);
     }
 
+    /**
+     * This constructor completes the message to be sent to the sender.
+     *
+     * @param messagePublish
+     * @param sender
+     * @param timestamp
+     */
     public MessagePublication(MessagePublish messagePublish, String sender, long timestamp) {
-        this(messagePublish.getCharset(),messagePublish.getData(),messagePublish.getTopic(),sender,timestamp);
+        this(messagePublish.getCharset(), messagePublish.getData(), messagePublish.getTopic(), sender,timestamp);
     }
 
     public MessagePublication(byte [] origin) throws Exception {
