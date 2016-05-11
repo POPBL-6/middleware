@@ -1,5 +1,7 @@
 package data;
 
+import java.io.UnsupportedEncodingException;
+
 /**
  * Abstract class of the messages that are exchange between clients and broker.
  */
@@ -54,6 +56,8 @@ public abstract class Message {
     	return msg;
     }
     
-    public abstract byte[] toByteArray() throws Exception;
+    public abstract byte[] toByteArray() throws UnsupportedEncodingException;
+    
+    public abstract int getMessageType();
 
 }

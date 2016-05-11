@@ -13,4 +13,8 @@ public class MessageUnsubscribe extends MessageSubscribe {
     public MessageUnsubscribe(byte[] origin) throws Exception {
     	super(origin);
     }
+    
+    public int getMessageType() {
+		return Message.MESSAGE_UNSUBSCRIBE;
+	}
 }

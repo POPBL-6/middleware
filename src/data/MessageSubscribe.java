@@ -84,4 +84,9 @@ public class MessageSubscribe extends Message {
 		}
 		return out;
     }
+    
+    public int getMessageType() {
+		return Message.MESSAGE_SUBSCRIBE;
+	}
+    
 }

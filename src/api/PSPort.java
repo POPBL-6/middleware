@@ -1,11 +1,12 @@
 package api;
 
 import data.MessagePublication;
+import data.MessagePublish;
 
 /**
  * Interface of the utils of the Middleware API.
  */
-public interface PSPortInterface {
+public interface PSPort {
 
     /**
      * This method should disconnect from the server when the API is connected.
@@ -35,7 +36,7 @@ public interface PSPortInterface {
      * @param topic
      * @param data
      */
-    void publish(String topic, byte [] data);
+    void publish(MessagePublish publication);
 
     /**
      * This method returns the last message of a concrete topic.

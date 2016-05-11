@@ -119,5 +119,9 @@ public class MessagePublication extends MessagePublish {
 				senderLenBytes,charsetBytes,topicBytes,senderBytes,timestampBytes,getData());
 		return out;
     }
+    
+    public int getMessageType() {
+		return Message.MESSAGE_PUBLICATION;
+	}
 
 }

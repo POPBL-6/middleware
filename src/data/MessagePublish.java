@@ -109,4 +109,8 @@ public class MessagePublish extends Message {
 		return out;
     }
 
+	public int getMessageType() {
+		return Message.MESSAGE_PUBLISH;
+	}
+
 }
