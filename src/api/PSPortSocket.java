@@ -1,6 +1,7 @@
 package api;
 
 import java.util.Map;
+import java.util.Vector;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,10 +22,14 @@ public abstract class PSPortSocket extends Thread implements PSPort {
 
     protected Connection connection;
     protected Map<String, MessagePublication> lastSamples;
+    protected Vector<TopicListener> listeners;
     
     private void manageMessagePublication(MessagePublication message) {
 		//TODO: Log
     	lastSamples.put(message.getTopic(), message);
+    	for(TopicListener listener : listeners) {
+    		listener.publicationReceived(message);
+    	}
 	}
     
     private void manageMessagePublish(MessagePublish message) {
@@ -106,6 +111,14 @@ public abstract class PSPortSocket extends Thread implements PSPort {
 
     public MessagePublication getLastSample(String topic) {
         return lastSamples.get(topic);
+    }
+    
+    public void addTopicListener(TopicListener listener) {
+    	listeners.add(listener);
+    }
+    
+    public void removeTopicListener(TopicListener listener) {
+    	listeners.remove(listener);
     }
 
     public Connection getConnection() {

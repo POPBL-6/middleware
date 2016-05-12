@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Vector;
 
 import connection.SocketConnection;
 import data.MessagePublication;
@@ -28,6 +29,7 @@ public class PSPortTCP extends PSPortSocket {
     	SocketConnection connection = new SocketConnection();
     	socket = new Socket(address,port);
     	lastSamples = Collections.synchronizedMap(new HashMap<String, MessagePublication>());
+    	listeners = new Vector<TopicListener>();
     	connection.init(socket, CONNECTION_BUFFER_SIZE);
     	this.connection = connection;
     	this.start();

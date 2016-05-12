@@ -42,8 +42,22 @@ public interface PSPort {
      * This method returns the last message of a concrete topic.
      *
      * @param topic
-     * @return
+     * @return MessagePublication
      */
     MessagePublication getLastSample(String topic);
+    
+    /**
+     * This adds a listener so that it is notified of received publications.
+     *
+     * @param listener
+     */
+    void addTopicListener(TopicListener listener);
+    
+    /**
+     * This method removes a listener so that it no longer receives notifications.
+     *
+     * @param listener
+     */
+    void removeTopicListener(TopicListener listener);
 
 }
