@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/POPBL-6/middleware.svg?branch=master)](https://travis-ci.org/POPBL-6/middleware)
 
+[![Coverity Status](https://scan.coverity.com/projects/8890/badge.svg)](https://scan.coverity.com/projects/popbl-6-middleware)
+
 Publish/subscribe API developed for our project
 
 ## Building the API
