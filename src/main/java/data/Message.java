@@ -46,9 +46,7 @@ public abstract class Message {
     				msg = new MessageUnsubscribe(origin);	
     				break;
         		}
-    		} catch (Exception e) {
-    			// TODO: Catch the correct exception.
-    		}
+    		} catch (Exception e) {}
     	}
     	if (msg == null) {
     		throw new IllegalArgumentException("Bad data format");

@@ -25,7 +25,7 @@ public abstract class PSPortSocket extends Thread implements PSPort {
     protected Vector<TopicListener> listeners;
     
     private void manageMessagePublication(MessagePublication message) {
-		//TODO: Log
+    	logger.info("MessagePublication received -> Timestamp: "+message.getTimestamp()+" || Sender: "+message.getSender()+" || Topic: "+message.getTopic());
     	lastSamples.put(message.getTopic(), message);
     	for(TopicListener listener : listeners) {
     		listener.publicationReceived(message);
@@ -33,22 +33,22 @@ public abstract class PSPortSocket extends Thread implements PSPort {
 	}
     
     private void manageMessagePublish(MessagePublish message) {
-		//TODO: Log? No deberia ocurrir
+    	logger.warn("MessagePublish received from broker -> Topic: "+message.getTopic());
 	}
     
     private void manageMessageSubscribe(MessageSubscribe message) {
-		//TODO: Log? No deberia ocurrir
+    	logger.warn("MessageSubscribe received from broker");
 	}
     
     private void manageMessageUnsubscribe(MessageUnsubscribe message) {
-		//TODO: Log? No deberia ocurrir
+    	logger.warn("MessageUnsubscribe received from broker");
 	}
     
     public void run() {
     	try {
 			while(!connection.isClosed()) {
 				Message message = connection.readMessage();
-				//TODO: Log message received
+				logger.info("Message received");
 				switch(message.getMessageType()) {
 				case Message.MESSAGE_PUBLICATION:
 					manageMessagePublication((MessagePublication) message);
@@ -70,7 +70,7 @@ public abstract class PSPortSocket extends Thread implements PSPort {
 			//Interrupted
 		}
 		connection.close();
-		//TODO: Log disconection
+		logger.info("Disconnected from broker");
     }
 
     public void disconnect() {

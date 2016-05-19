@@ -7,11 +7,16 @@ import java.net.SocketException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import utils.ArrayUtils;
 import data.Message;
 import data.MessageSubscribe;
 
 public class SocketConnection implements Connection {
+	
+	private static final Logger logger = LogManager.getLogger(SocketConnection.class);
 	
 	public static final String DEFAULT_ADDRESS = "127.0.0.1";
 	public static final String DEFAULT_INTERFACE = "127.0.0.1";
@@ -66,13 +71,12 @@ public class SocketConnection implements Connection {
 				while(read < messageLength) {
 					read += in.read(messageBytes, read, messageLength-read);
 				}
-				//TODO: Log mensaje recibido
 				messagesIn.put(Message.fromByteArray(messageBytes));
+				logger.info("New message put on inbox");
 			}
 		}  catch(Exception e) {
 			if(!isClosed()) {
-				//TODO: Log
-				e.printStackTrace();
+				logger.warn("Exception thrown on receiver thread", e);
 			}
 		}
 		close();
@@ -85,6 +89,7 @@ public class SocketConnection implements Connection {
 			byte[] sendLength = new byte[Integer.BYTES];
 			while(!socket.isClosed()) {
 				send = messagesOut.take().toByteArray();
+				logger.info("Sending message");
 				for(int i = 0 ; i < Integer.BYTES ; i++) {
 					sendLength[i] = (byte)(send.length>>(Byte.SIZE*i));
 				}
@@ -92,7 +97,7 @@ public class SocketConnection implements Connection {
 				out.write(send);
 			}
 		}  catch(Exception e) {
-			//TODO: Log
+			logger.warn("Exception thrown on sender thread", e);
 			if(!isClosed()) {
 				close();
 			}
@@ -114,7 +119,7 @@ public class SocketConnection implements Connection {
 	public synchronized void close() {
 		try {
 			if(socket!=null) {
-				//TODO: Log
+				logger.info("Closing SocketConnection");
 				closed = true;
 				socket.close();
 				messagesIn.offer(new MessageSubscribe());
