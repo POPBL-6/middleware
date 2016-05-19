@@ -22,7 +22,7 @@ public abstract class Message {
         this.charset = charset;
     }
 
-    /***
+    /**
      * This method returns a Message object from a byte array.
      *
      * @param origin
