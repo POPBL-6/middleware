@@ -1,19 +1,22 @@
 package connection;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import utils.ArrayUtils;
 import data.Message;
 import data.MessageSubscribe;
 
 public class SocketConnection implements Connection {
+	
+	private static final Logger logger = LogManager.getLogger(SocketConnection.class);
 	
 	public static final String DEFAULT_ADDRESS = "127.0.0.1";
 	public static final String DEFAULT_INTERFACE = "127.0.0.1";
@@ -54,43 +57,26 @@ public class SocketConnection implements Connection {
 			int read;
 			int next;
 			byte[] messageBytes;
-			try {
-				while(!socket.isClosed()) {
-					messageLength = 0;
-					read = 0;
-					for(int i = 0 ; i < Integer.BYTES ; i++) {
-						next = in.read();
-						if(next==-1) {
-							throw new SocketException("Socket closed");
-						}
-						messageLength += next<<(Byte.SIZE*i);
+			while(!socket.isClosed()) {
+				messageLength = 0;
+				read = 0;
+				for(int i = 0 ; i < Integer.BYTES ; i++) {
+					next = in.read();
+					if(next==-1) {
+						throw new SocketException("Socket closed");
 					}
-					messageBytes = new byte[messageLength];
-					while(read < messageLength) {
-						read += in.read(messageBytes, read, messageLength-read);
-					}
-					//TODO: Log mensaje recibido
-					try {
-						messagesIn.put(Message.fromByteArray(messageBytes));
-					} catch(IllegalArgumentException badMsgException) {
-						if(!isClosed()) {
-							//TODO: Log bad Message
-							badMsgException.printStackTrace();
-							close();
-						}
-					}
+					messageLength += next<<(Byte.SIZE*i);
 				}
-			} catch(SocketException sockException) {
-				//Socket was closed
-				if(!isClosed()) sockException.printStackTrace();
-			} catch(InterruptedException interruptException) {
-				//BlockingQueue interrupted
-				if(!isClosed()) interruptException.printStackTrace();
+				messageBytes = new byte[messageLength];
+				while(read < messageLength) {
+					read += in.read(messageBytes, read, messageLength-read);
+				}
+				messagesIn.put(Message.fromByteArray(messageBytes));
+				logger.info("New message put on inbox");
 			}
-		}  catch(IOException ioException) {
+		}  catch(Exception e) {
 			if(!isClosed()) {
-				//TODO: Log
-				ioException.printStackTrace();
+				logger.warn("Exception thrown on receiver thread", e);
 			}
 		}
 		close();
@@ -101,30 +87,18 @@ public class SocketConnection implements Connection {
 			OutputStream out = socket.getOutputStream();
 			byte[] send;
 			byte[] sendLength = new byte[Integer.BYTES];
-			try {
-				while(!socket.isClosed()) {
-					try {
-						send = messagesOut.take().toByteArray();
-						for(int i = 0 ; i < Integer.BYTES ; i++) {
-							sendLength[i] = (byte)(send.length>>(Byte.SIZE*i));
-						}
-						send = ArrayUtils.concat(sendLength,send);
-						out.write(send);
-					} catch(UnsupportedEncodingException unsuportedException) {
-						//TODO: Log bad message
-					}
+			while(!socket.isClosed()) {
+				send = messagesOut.take().toByteArray();
+				logger.info("Sending message");
+				for(int i = 0 ; i < Integer.BYTES ; i++) {
+					sendLength[i] = (byte)(send.length>>(Byte.SIZE*i));
 				}
-			} catch(SocketException sockException) {
-				//Socket was closed
-				if(!isClosed()) sockException.printStackTrace();
-			} catch(InterruptedException interruptException) {
-				//BlockingQueue interrupted
-				if(!isClosed()) interruptException.printStackTrace();
+				send = ArrayUtils.concat(sendLength,send);
+				out.write(send);
 			}
-		}  catch(IOException ioException) {
-			//TODO: Log
+		}  catch(Exception e) {
+			logger.warn("Exception thrown on sender thread", e);
 			if(!isClosed()) {
-				ioException.printStackTrace();
 				close();
 			}
 		}
@@ -145,7 +119,7 @@ public class SocketConnection implements Connection {
 	public synchronized void close() {
 		try {
 			if(socket!=null) {
-				//TODO: Log
+				logger.info("Closing SocketConnection");
 				closed = true;
 				socket.close();
 				messagesIn.offer(new MessageSubscribe());

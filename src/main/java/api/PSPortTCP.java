@@ -10,7 +10,7 @@ import connection.SocketConnection;
 import data.MessagePublication;
 
 /**
- * API implementation using normal sockets.
+ * API implementation using TCP sockets.
  */
 public class PSPortTCP extends PSPortSocket {
 	
@@ -34,7 +34,14 @@ public class PSPortTCP extends PSPortSocket {
     	this.connection = connection;
     	this.start();
     }
-
+    
+    /**
+     * This factory method instantiates a PSPortTCP based on a configuration. This is meant to be used by PSPortFactory.
+     * 
+     * @param args The configuration string used to instantiate the PSPort object.
+     * Example: "PSPortTCP --address 127.0.0.1 --port 5434"
+     * @return The created PSPortTCP instance.
+     */
     public static PSPort getInstance(String args) throws IllegalArgumentException, IOException {
 		String address = SocketConnection.DEFAULT_ADDRESS;
 		int port = SocketConnection.DEFAULT_PORT;
