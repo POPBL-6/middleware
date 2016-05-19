@@ -7,6 +7,6 @@ import org.junit.runners.Suite;
  * Created by Gorka Olalde on 9/5/16.
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({MailboxTests.class, MessagesTests.class})
+@Suite.SuiteClasses({MessagesTests.class})
 public class DataPkgTestSuite {
 }
