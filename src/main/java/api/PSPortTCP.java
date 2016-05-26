@@ -19,7 +19,7 @@ public class PSPortTCP extends PSPortSocket {
 	Socket socket;
 
     /**
-     * This constructor creates a normal socket to connect to the server.
+     * This constructor creates a TCP socket to connect to the server.
      *
      * @param address
      * @param port

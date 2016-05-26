@@ -31,7 +31,7 @@ public class PSPortSSL extends PSPortSocket {
 	Socket socket;
 
     /**
-     * This constructor creates a normal socket to connect to the server.
+     * This constructor creates a SSLSocket to connect to the server.
      *
      * @param address
      * @param port
@@ -78,9 +78,9 @@ public class PSPortSSL extends PSPortSocket {
     public static PSPort getInstance(String args) throws IllegalArgumentException, IOException {
 		String address = SocketConnection.DEFAULT_ADDRESS;
 		int port = SocketConnection.DEFAULT_PORT;
-		String trustStore = ".truststore";
+		String trustStore = ".keystore";
 		String keyStore = ".keystore";
-		String keyStorePassword = "";
+		String keyStorePassword = "snowflake";
 		try {
 			String[] configuration = args.trim().split("[ ]");
 			for(int i = 1 ; i < configuration.length ; i++) {
@@ -103,7 +103,7 @@ public class PSPortSSL extends PSPortSocket {
 					break;
 				case "-kp":
 				case "--keyPass":
-					keyStore = configuration[++i];
+					keyStorePassword = configuration[++i];
 					break;
 				}
 			}
