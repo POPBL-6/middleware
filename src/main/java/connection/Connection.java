@@ -4,6 +4,8 @@ import data.Message;
 
 public interface Connection {
 	
+	void setConnectionId(String id);
+	String getConnectionId();
 	Message readMessage() throws InterruptedException;
 	void writeMessage(Message message) throws InterruptedException;
 	void close();

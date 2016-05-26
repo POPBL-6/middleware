@@ -2,8 +2,6 @@ package data;
 
 /**
  * Message sent to unsubscribe from topics.
- *
- * @author urko
  */
 public class MessageUnsubscribe extends MessageSubscribe {
 	public MessageUnsubscribe(String ... topics) {
