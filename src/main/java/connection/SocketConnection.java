@@ -26,6 +26,7 @@ public class SocketConnection implements Connection {
 	private BlockingQueue<Message> messagesIn, messagesOut;
 	private Thread readingThread, writingThread;
 	private volatile boolean closed;
+	private String id;
 	
 	public void init(Socket socket, BlockingQueue<Message> messagesIn, BlockingQueue<Message> messagesOut) {
 		closed = false;
@@ -137,6 +138,14 @@ public class SocketConnection implements Connection {
 			return socket.getInetAddress()+":"+socket.getPort();
 		}
 		else return "ConnectionClosed";
+	}
+
+	public void setConnectionId(String id) {
+		this.id = id;
+	}
+
+	public String getConnectionId() {
+		return id;
 	}
 	
 }
