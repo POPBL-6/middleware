@@ -54,6 +54,7 @@ public class TestSocketConnection {
 	public void cleanUp() throws Exception {
 		connection1.close();
 		connection2.close();
+		serverSocket.close();
 		connection1 = null;
 		connection2 = null;
 		socket1 = null;
