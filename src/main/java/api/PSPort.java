@@ -59,5 +59,12 @@ public interface PSPort {
      * @param listener
      */
     void removeTopicListener(TopicListener listener);
+    
+    /**
+     * This method returns an array containing the topics which may contain data.
+     *
+     * @return The list of topics that contain data.
+     */
+    String[] getAvailableTopics();
 
 }

@@ -120,6 +120,10 @@ public abstract class PSPortSocket extends Thread implements PSPort {
     public void removeTopicListener(TopicListener listener) {
     	listeners.remove(listener);
     }
+    
+	public String[] getAvailableTopics() {
+		return lastSamples.keySet().toArray(new String[0]);
+	}
 
     public Connection getConnection() {
         return connection;

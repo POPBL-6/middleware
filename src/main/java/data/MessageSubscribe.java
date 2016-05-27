@@ -7,6 +7,8 @@ import utils.ArrayUtils;
 
 /**
  * Message sent to subscribe to some topics.
+ *
+ * @author urko
  */
 public class MessageSubscribe extends Message {
 
