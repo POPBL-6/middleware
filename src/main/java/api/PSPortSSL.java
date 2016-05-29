@@ -42,7 +42,7 @@ public class PSPortSSL extends PSPortSocket {
      * @throws UnrecoverableKeyException 
      * @throws KeyManagementException 
      */
-    public PSPortSSL(String address, int port, String trustStore, String keyStore, String keyStorePassword) throws IOException, NoSuchAlgorithmException, CertificateException, KeyStoreException, UnrecoverableKeyException, KeyManagementException {
+    public PSPortSSL(String address, int port, String trustStore, String keyStore, String keyStorePassword, String protocol, String cipher) throws IOException, NoSuchAlgorithmException, CertificateException, KeyStoreException, UnrecoverableKeyException, KeyManagementException {
     	SocketConnection connection = new SocketConnection();
     	
     	//SSL setup
@@ -51,12 +51,12 @@ public class PSPortSSL extends PSPortSocket {
 	    keystore.load(new FileInputStream(keyStore), keyStorePassword.toCharArray());
 	    KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
 	    kmf.init(keystore, keyStorePassword.toCharArray());
-	    SSLContext sc = SSLContext.getInstance("TLSv1.2");
+	    SSLContext sc = SSLContext.getInstance(protocol);
 	    sc.init(kmf.getKeyManagers(), null, null);
 	    SSLSocketFactory ssf = sc.getSocketFactory();
 		SSLSocket s = (SSLSocket)ssf.createSocket(address, port);
-		s.setEnabledCipherSuites(new String[] {"TLS_DHE_DSS_WITH_AES_128_CBC_SHA256"});
-		s.setEnabledProtocols(new String[] {"TLSv1.2"});
+		s.setEnabledCipherSuites(new String[] {cipher});
+		s.setEnabledProtocols(new String[] {protocol});
 	    s.setEnableSessionCreation(true);
 		s.startHandshake();
 		
@@ -81,6 +81,8 @@ public class PSPortSSL extends PSPortSocket {
 		String trustStore = ".keystore";
 		String keyStore = ".keystore";
 		String keyStorePassword = "snowflake";
+		String protocol = "TLSv1.2";
+		String cipher = "TLS_DHE_DSS_WITH_AES_128_CBC_SHA256";
 		try {
 			String[] configuration = args.trim().split("[ ]");
 			for(int i = 1 ; i < configuration.length ; i++) {
@@ -105,13 +107,23 @@ public class PSPortSSL extends PSPortSocket {
 				case "--keyPass":
 					keyStorePassword = configuration[++i];
 					break;
+				case "-pr":
+				case "--protocol":
+					protocol = configuration[++i];
+					break;
+				case "-c":
+				case "--cipher":
+					cipher = configuration[++i];
+					break;
+				default:
+					break;
 				}
 			}
 		} catch(Exception e) {
 			throw new IllegalArgumentException("Invalid PSPortSSL configuration format");
 		}
 		try {
-			return new PSPortSSL(address,port,trustStore,keyStore,keyStorePassword);
+			return new PSPortSSL(address,port,trustStore,keyStore,keyStorePassword,protocol,cipher);
 		} catch (Exception e) {
 			throw new IOException(e);
 		}
