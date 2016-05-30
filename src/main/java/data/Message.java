@@ -70,30 +70,56 @@ public abstract class Message {
         return topic;
     }
 
-    public abstract void readHeader(byte[] origin) throws UnsupportedEncodingException;
+    /**
+     * Reads the header fields of the message.
+     * @param origin Message byte array.
+     * @throws UnsupportedEncodingException
+     */
+    abstract void readHeader(byte[] origin) throws UnsupportedEncodingException;
 
-    public abstract void readLengths(byte[] origin);
+
+    /**
+     * Reads the length fields of the message.
+     * @param origin Message byte array.
+     */
+    abstract void readLengths(byte[] origin);
 
     void setTopic(String topic) {
         this.topic = topic;
     }
 
-
+    /**
+     * Reads the charset of the message and stores it to the local field.
+     * @param origin Message byte array.
+     * @throws UnsupportedEncodingException
+     */
     void readCharset(byte[] origin) throws UnsupportedEncodingException {
         int charsetOffset = MSG_TYPE_SIZE + lengthHeaderSize;
         charset = new String(ArrayUtils.subarray(origin,charsetOffset ,charsetLength),"ASCII");
     }
 
-
+    /**
+     * Reads the topic field of the message and stores it to the local field.
+     * @param origin Message byte array.
+     * @throws UnsupportedEncodingException
+     */
     void readTopic(byte[] origin) throws UnsupportedEncodingException {
         int topicOffset = MSG_TYPE_SIZE + lengthHeaderSize + charsetLength;
         topic = new String(ArrayUtils.subarray(origin,topicOffset, topicLength),getCharset());
     }
 
-
+    /**
+     * Reads the data field of the different message types.
+     * @param origin Message byte array.
+     */
     abstract void readData(byte[] origin);
 
-
+    /**
+     * Reads the message type field of the message.
+     * @param origin Message byte array.
+     * @return The message type.
+     * @throws IllegalArgumentException
+     */
     byte readMessageType(byte[] origin) throws IllegalArgumentException{
         byte type = origin[0];
         if (type == MESSAGE_PUBLICATION ||
