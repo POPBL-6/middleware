@@ -19,7 +19,13 @@ public class MessageSubscribe extends Message {
     	setCharset(Message.DEFAULT_CHARSET);
         this.topics = topics;
     }
-    
+
+    /**
+     * Create a subscribe message from it's raw byte array form.
+     * @param origin The message stored in a byte array.
+     * @throws IllegalArgumentException Thrown if the message doesn't match the message types.
+     * @throws UnsupportedEncodingException Thrown if the encoding is not supported by the system.
+     */
     public MessageSubscribe(byte[] origin) throws IllegalArgumentException, UnsupportedEncodingException {
 		
 		if(origin == null ||
@@ -32,6 +38,10 @@ public class MessageSubscribe extends Message {
         readTopics();
     }
 
+    /**
+     * Get the topics stored in the message.
+     * @return The topic array.
+     */
     public String [] getTopics() {
         return topics;
     }
@@ -55,6 +65,12 @@ public class MessageSubscribe extends Message {
 		lengthHeaderSize = Integer.BYTES;
 	}
 
+    /**
+     *  Read the topic length of one topic stored in the data field.
+     * @param origin The data field of the message.
+     * @param offSet The offset where it starts to read the length.
+     * @return The length of the topic.
+     */
     private int readTopicLength(byte[] origin, int offSet) {
         int length = 0;
         for(int i = 0 ; i < Integer.BYTES ; i++) {
@@ -69,6 +85,10 @@ public class MessageSubscribe extends Message {
         data = ArrayUtils.subarray(origin, dataOffset);
 	}
 
+    /**
+     * Reads all the topics stored in the message.
+     * @throws UnsupportedEncodingException Thrown if the encoding is not supported by the system.
+     */
     private void readTopics() throws UnsupportedEncodingException {
         ArrayList<String> topicList = new ArrayList<>();
         int read = 0;
