@@ -1,4 +1,4 @@
-package tests.apiTests;
+package tests.apitests;
 
 import org.junit.Rule;
 import org.junit.rules.Timeout;

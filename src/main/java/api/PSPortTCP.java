@@ -8,15 +8,18 @@ import java.util.Vector;
 
 import connection.SocketConnection;
 import data.MessagePublication;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * API implementation using TCP sockets.
  */
 public class PSPortTCP extends PSPortSocket {
-	
+
+	private static final Logger logger = LogManager.getLogger(PSPortSocket.class);
 	public static final int CONNECTION_BUFFER_SIZE = 10;
 	
-	Socket socket;
+	private Socket socket;
 
     /**
      * This constructor creates a TCP socket to connect to the server.
@@ -28,11 +31,12 @@ public class PSPortTCP extends PSPortSocket {
     public PSPortTCP(String address, int port) throws IOException {
     	SocketConnection connection = new SocketConnection();
     	socket = new Socket(address,port);
-    	lastSamples = Collections.synchronizedMap(new HashMap<String, MessagePublication>());
-    	listeners = new Vector<TopicListener>();
+    	lastSamples = Collections.synchronizedMap(new HashMap<>());
+    	listeners = new Vector<>();
     	connection.init(socket, CONNECTION_BUFFER_SIZE);
     	this.connection = connection;
     	this.start();
+		logger.info("TCP listener started");
     }
     
     /**
@@ -57,9 +61,12 @@ public class PSPortTCP extends PSPortSocket {
 				case "--address":
 					address = configuration[++i];
 					break;
+				default:
+					logger.warn("Unexpected parameter was found in the configuration");
 				}
 			}
 		} catch(Exception e) {
+			logger.error("An error occurred when reading the configuration", e);
 			throw new IllegalArgumentException("Invalid PSPortTCP configuration format");
 		}
 		return new PSPortTCP(address,port);

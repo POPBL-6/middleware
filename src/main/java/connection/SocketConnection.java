@@ -24,12 +24,10 @@ public class SocketConnection implements Connection {
 	private static final Logger logger = LogManager.getLogger(SocketConnection.class);
 	
 	public static final String DEFAULT_ADDRESS = "127.0.0.1";
-	public static final String DEFAULT_INTERFACE = "127.0.0.1";
 	public static final int DEFAULT_PORT = 5434;
 	
 	private Socket socket;
 	private BlockingQueue<Message> messagesIn, messagesOut;
-	private Thread readingThread, writingThread;
 	private volatile boolean closed;
 	private String id;
 	
@@ -46,16 +44,8 @@ public class SocketConnection implements Connection {
 		this.socket = socket;
 		this.messagesIn = messagesIn;
 		this.messagesOut = messagesOut;
-		readingThread = new Thread() {
-			public void run() {
-				readingTask();
-			}
-		};
-		writingThread = new Thread() {
-			public void run() {
-				sendingTask();
-			}
-		};
+		Thread readingThread = new Thread(() -> readingTask());
+		Thread writingThread = new Thread(() -> sendingTask());
 		readingThread.start();
 		writingThread.start();
 	}
@@ -68,7 +58,7 @@ public class SocketConnection implements Connection {
 	 * @param bufferSize
 	 */
 	public void init(Socket socket, int bufferSize) {
-		init(socket,new ArrayBlockingQueue<Message>(bufferSize),new ArrayBlockingQueue<Message>(bufferSize));
+		init(socket, new ArrayBlockingQueue<>(bufferSize), new ArrayBlockingQueue<>(bufferSize));
 	}
 	
 	/**
@@ -182,7 +172,9 @@ public class SocketConnection implements Connection {
 		if(socket!=null) {
 			return socket.getInetAddress()+":"+socket.getPort();
 		}
-		else return "ConnectionClosed";
+		else {
+			return "ConnectionClosed";
+		}
 	}
 
 	/**

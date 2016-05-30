@@ -26,9 +26,9 @@ import data.MessagePublication;
  */
 public class PSPortSSL extends PSPortSocket {
 	
-	public static final int CONNECTION_BUFFER_SIZE = 10;
-	
-	Socket socket;
+	private static final int CONNECTION_BUFFER_SIZE = 10;
+
+	private Socket socket;
 
     /**
      * This constructor creates a SSLSocket to connect to the server.

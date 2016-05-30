@@ -1,4 +1,4 @@
-package tests.dataTests;
+package tests.datatests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -17,10 +17,10 @@ import org.junit.rules.Timeout;
 
 public class MessagesTests {
 	
-	MessagePublish msgPublish;
-	MessagePublication msgPublication;
-	MessageSubscribe msgSubscribe;
-	MessageUnsubscribe msgUnsubscribe;
+	private MessagePublish msgPublish;
+	private MessagePublication msgPublication;
+	private MessageSubscribe msgSubscribe;
+	private MessageUnsubscribe msgUnsubscribe;
 
 	@Rule
 	public Timeout globalTimeout = Timeout.seconds(10);

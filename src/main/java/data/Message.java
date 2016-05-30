@@ -14,15 +14,15 @@ public abstract class Message {
     public static final byte MESSAGE_SUBSCRIBE = 2;
     public static final byte MESSAGE_UNSUBSCRIBE = 3;
     public static final String DEFAULT_CHARSET = "UTF-8";
-    static final int MSG_TYPE_SIZE = Byte.BYTES;
-    String charset;
+    public static final int MSG_TYPE_SIZE = Byte.BYTES;
+    protected String charset;
 
-	String topic;
+	protected String topic;
 	protected byte [] data;
 
-	int charsetLength;
-	int topicLength;
-    int lengthHeaderSize;
+	protected int charsetLength;
+	protected int topicLength;
+    protected int lengthHeaderSize;
 
     public String getCharset() {
         return charset;

@@ -1,4 +1,4 @@
-package tests.socketTests;
+package tests.sockettests;
 
 import org.junit.Rule;
 import org.junit.rules.Timeout;

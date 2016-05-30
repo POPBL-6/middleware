@@ -1,4 +1,4 @@
-package tests.dataTests;
+package tests.datatests;
 
 import org.junit.Rule;
 import org.junit.rules.Timeout;

@@ -86,12 +86,14 @@ public abstract class PSPortSocket extends Thread implements PSPort {
 				case Message.MESSAGE_UNSUBSCRIBE:
 					manageMessageUnsubscribe((MessageUnsubscribe) message);
 					break;
+				default:
+					logger.warn("Unknown message received");
 				}
 			}
 		} catch (InterruptedException e) {
-			//Interrupted
+			logger.error("The receiving thread was interrupted", e);
 		} catch (NullPointerException e) {
-			//Interrupted
+			logger.error("The message was not correctly received", e);
 		}
 		connection.close();
 		logger.info("Disconnected from broker");
