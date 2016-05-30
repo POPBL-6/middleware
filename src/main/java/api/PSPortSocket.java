@@ -24,6 +24,11 @@ public abstract class PSPortSocket extends Thread implements PSPort {
     protected Map<String, MessagePublication> lastSamples;
     protected Vector<TopicListener> listeners;
     
+    /**
+	 * Determines what to do when a MessagePublication is received.
+	 * 
+	 * @param message
+	 */
     private void manageMessagePublication(MessagePublication message) {
     	logger.info("MessagePublication received -> Timestamp: "+message.getTimestamp()+" || Sender: "+message.getSender()+" || Topic: "+message.getTopic());
     	lastSamples.put(message.getTopic(), message);
@@ -32,18 +37,37 @@ public abstract class PSPortSocket extends Thread implements PSPort {
     	}
 	}
     
+    /**
+	 * Determines what to do when a MessagePublish is received.
+	 * 
+	 * @param message
+	 */
     private void manageMessagePublish(MessagePublish message) {
     	logger.warn("MessagePublish received from broker -> Topic: "+message.getTopic());
 	}
     
+    /**
+	 * Determines what to do when a MessageSubscribe is received.
+	 * 
+	 * @param message
+	 */
     private void manageMessageSubscribe(MessageSubscribe message) {
     	logger.warn("MessageSubscribe received from broker");
 	}
     
+    /**
+	 * Determines what to do when a MessageUnsubscribe is received.
+	 * 
+	 * @param message
+	 */
     private void manageMessageUnsubscribe(MessageUnsubscribe message) {
     	logger.warn("MessageUnsubscribe received from broker");
 	}
     
+    /**
+     * The entry point of this Thread.
+     * Constantly reads and handles Messages from the Connection.
+     */
     public void run() {
     	try {
 			while(!connection.isClosed()) {
@@ -73,12 +97,15 @@ public abstract class PSPortSocket extends Thread implements PSPort {
 		logger.info("Disconnected from broker");
     }
 
+    /**
+     * Closes the connection.
+     */
     public void disconnect() {
 		connection.close();
     }
 
     /**
-     * Subscribe will subscribe the client to a topic an ask for the last message.
+     * Subscribes this client to the specified topics by sending a MessageSubscribe.
      *
      * @param topics
      * @return lastMessage
@@ -92,6 +119,12 @@ public abstract class PSPortSocket extends Thread implements PSPort {
         }
     }
 
+    /**
+     * Unsubscribes this client from the specified topics by sending a MessageUnsubscribe.
+     *
+     * @param topics
+     * @return lastMessage
+     */
     public void unsubscribe(String ... topics) {
         MessageUnsubscribe message = new MessageUnsubscribe(topics);
         try {
@@ -101,6 +134,9 @@ public abstract class PSPortSocket extends Thread implements PSPort {
         }
     }
 
+    /**
+     * Sends the provided MessagePublish to the Broker for distribution.
+     */
     public void publish(MessagePublish message) {
         try {
         	connection.writeMessage(message);
@@ -109,26 +145,51 @@ public abstract class PSPortSocket extends Thread implements PSPort {
         }
     }
 
+    /**
+     * Returns the last MessagePublication received for the provided topic,
+     * or null if none was received.
+     */
     public MessagePublication getLastSample(String topic) {
         return lastSamples.get(topic);
     }
     
+    /**
+     * Registers the provided TopicListener so that it is notified
+     * when a Message is received.
+     */
     public void addTopicListener(TopicListener listener) {
     	listeners.add(listener);
     }
     
+    /**
+     * Removes a registered TopicListener, or does nothing if the
+     * TopicListener was not registered.
+     */
     public void removeTopicListener(TopicListener listener) {
     	listeners.remove(listener);
     }
     
+    /**
+     * Returns a String[] with all the topics for which
+     * getLastSample(topic) will not return null.
+     */
 	public String[] getAvailableTopics() {
 		return lastSamples.keySet().toArray(new String[0]);
 	}
 
+	/**
+	 * Gets the connection used by this PSPort.
+	 * 
+	 * @return The connection used by this PSPort.
+	 */
     public Connection getConnection() {
         return connection;
     }
 
+    /**
+     * Sets the connection used by this PSPort.
+     * @param connection The new connection to be used.
+     */
     protected void setConnection(Connection connection) {
         this.connection = connection;
     }

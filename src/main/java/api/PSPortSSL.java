@@ -72,7 +72,7 @@ public class PSPortSSL extends PSPortSocket {
      * This factory method instantiates a PSPortSSL based on a configuration. This is meant to be used by PSPortFactory.
      * 
      * @param args The configuration string used to instantiate the PSPort object.
-     * Example: "PSPortSSL --address 127.0.0.1 --port 5434"
+     * Example: "PSPortSSL -a 127.0.0.1 -p 443 -t .truststore -k .keystore -kp password -pr TLSv1.2 -c TLS_DHE_DSS_WITH_AES_128_CBC_SHA256"
      * @return The created PSPortSSL instance.
      */
     public static PSPort getInstance(String args) throws IllegalArgumentException, IOException {

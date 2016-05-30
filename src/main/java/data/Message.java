@@ -33,10 +33,10 @@ public abstract class Message {
     }
 
     /**
-     * This method returns a Message object from a byte array.
+     * This method creates a Message object from a byte array.
      *
      * @param origin
-     * @return message
+     * @return message The Message parsed from the provided byte[].
      */
     public static Message fromByteArray(byte[] origin) {
     	Message msg = null;
@@ -63,6 +63,7 @@ public abstract class Message {
     	}
     	return msg;
     }
+
 
 
     public String getTopic() {
@@ -104,10 +105,20 @@ public abstract class Message {
             throw new IllegalArgumentException("Wrong magic number");
         }
     }
-
-
+    
+    /**
+     * Gets a byte[] representation of the Message so that it can be sent and stored.
+     * 
+     * @return The byte[] representation of the Message
+     * @throws UnsupportedEncodingException
+     */
     public abstract byte[] toByteArray() throws UnsupportedEncodingException;
     
+    /**
+     * Returns the identifier of the Message's type, declared in the data.Message class.
+     * 
+     * @return An Integer that identifies the Message's type.
+     */
     public abstract int getMessageType();
 
 }
