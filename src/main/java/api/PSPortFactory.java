@@ -41,6 +41,13 @@ public class PSPortFactory {
 		}
 		return port;
 	}
+	
+	/**
+	 * Reads and returns the first line of the specified file.
+	 * @param filename
+	 * @return The configuration read from the file.
+	 * @throws FileNotFoundException
+	 */
 	public static String getConfigurationFromFile(String filename) throws FileNotFoundException {
 		Scanner s = new Scanner(new FileInputStream(filename));
 		String config = s.nextLine();

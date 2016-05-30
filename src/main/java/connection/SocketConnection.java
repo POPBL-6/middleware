@@ -14,6 +14,11 @@ import utils.ArrayUtils;
 import data.Message;
 import data.MessageSubscribe;
 
+/**
+ * Connection implementation that uses Sockets.
+ * 
+ * @author Jon Ayerdi
+ */
 public class SocketConnection implements Connection {
 	
 	private static final Logger logger = LogManager.getLogger(SocketConnection.class);
@@ -28,6 +33,14 @@ public class SocketConnection implements Connection {
 	private volatile boolean closed;
 	private String id;
 	
+	/**
+	 * Initializes this SocketConnection with the provided Socket
+	 * and Messages queues.
+	 * 
+	 * @param socket
+	 * @param messagesIn
+	 * @param messagesOut
+	 */
 	public void init(Socket socket, BlockingQueue<Message> messagesIn, BlockingQueue<Message> messagesOut) {
 		closed = false;
 		this.socket = socket;
@@ -47,10 +60,21 @@ public class SocketConnection implements Connection {
 		writingThread.start();
 	}
 	
+	/**
+	 * Initializes this SocketConnection with the provided Socket
+	 * and creates buffers of the requested length.
+	 * 
+	 * @param socket
+	 * @param bufferSize
+	 */
 	public void init(Socket socket, int bufferSize) {
 		init(socket,new ArrayBlockingQueue<Message>(bufferSize),new ArrayBlockingQueue<Message>(bufferSize));
 	}
 	
+	/**
+	 * Entry point of the receiving Thread.
+	 * Constantly reads Messages and puts them in the messagesIn queue.
+	 */
 	public void readingTask() {
 		try {
 			InputStream in = socket.getInputStream();
@@ -83,6 +107,10 @@ public class SocketConnection implements Connection {
 		close();
 	}
 	
+	/**
+	 * Entry point of the sending Thread.
+	 * Constantly reads Messages from the messagesOut queue and sends them.
+	 */
 	public void sendingTask() {
 		try {
 			OutputStream out = socket.getOutputStream();
@@ -105,6 +133,9 @@ public class SocketConnection implements Connection {
 		}
 	}
 
+	/**
+	 * Reads the next Message from the messagesIn queue.
+	 */
 	public Message readMessage() throws InterruptedException {
 		try {
 			return messagesIn.take();
@@ -113,10 +144,16 @@ public class SocketConnection implements Connection {
 		}
 	}
 
+	/**
+	 * Puts the Message in the messagesOut queue.
+	 */
 	public void writeMessage(Message message) throws InterruptedException {
 		messagesOut.put(message);
 	}
 
+	/**
+	 * Closes this connection, thus leaving it unusable.
+	 */
 	public synchronized void close() {
 		try {
 			if(socket!=null) {
@@ -129,10 +166,18 @@ public class SocketConnection implements Connection {
 		} catch(Exception e) {}
 	}
 
+	/**
+	 * Returns true if this Connection is not closed.
+	 * 
+	 * @return true if this Connection is not closed.
+	 */
 	public synchronized boolean isClosed() {
 		return closed;
 	}
 	
+	/**
+	 * Returns a String with the InetAddress and Port of the other endpoint Socket.
+	 */
 	public String toString() {
 		if(socket!=null) {
 			return socket.getInetAddress()+":"+socket.getPort();
@@ -140,10 +185,18 @@ public class SocketConnection implements Connection {
 		else return "ConnectionClosed";
 	}
 
+	/**
+	 * Sets the Id of this connection
+	 * 
+	 * @param id
+	 */
 	public void setConnectionId(String id) {
 		this.id = id;
 	}
 
+	/**
+	 * Gets the Id of this connection
+	 */
 	public String getConnectionId() {
 		return id;
 	}
