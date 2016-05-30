@@ -1,5 +1,7 @@
 package data;
 
+import java.io.UnsupportedEncodingException;
+
 /**
  * Message sent to unsubscribe from topics.
  *
@@ -10,7 +12,7 @@ public class MessageUnsubscribe extends MessageSubscribe {
         super(topics);
     }
     
-    public MessageUnsubscribe(byte[] origin) throws Exception {
+    public MessageUnsubscribe(byte[] origin) throws UnsupportedEncodingException {
     	super(origin);
     }
     

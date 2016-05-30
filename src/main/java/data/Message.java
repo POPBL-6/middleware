@@ -1,5 +1,7 @@
 package data;
 
+import utils.ArrayUtils;
+
 import java.io.UnsupportedEncodingException;
 
 /**
@@ -12,7 +14,15 @@ public abstract class Message {
     public static final byte MESSAGE_SUBSCRIBE = 2;
     public static final byte MESSAGE_UNSUBSCRIBE = 3;
     public static final String DEFAULT_CHARSET = "UTF-8";
-    private String charset;
+    static final int MSG_TYPE_SIZE = Byte.BYTES;
+    String charset;
+
+	String topic;
+	protected byte [] data;
+
+	int charsetLength;
+	int topicLength;
+    int lengthHeaderSize;
 
     public String getCharset() {
         return charset;
@@ -53,7 +63,49 @@ public abstract class Message {
     	}
     	return msg;
     }
-    
+
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public abstract void readHeader(byte[] origin) throws UnsupportedEncodingException;
+
+    public abstract void readLengths(byte[] origin);
+
+    void setTopic(String topic) {
+        this.topic = topic;
+    }
+
+
+    void readCharset(byte[] origin) throws UnsupportedEncodingException {
+        int charsetOffset = MSG_TYPE_SIZE + lengthHeaderSize;
+        charset = new String(ArrayUtils.subarray(origin,charsetOffset ,charsetLength),"ASCII");
+    }
+
+
+    void readTopic(byte[] origin) throws UnsupportedEncodingException {
+        int topicOffset = MSG_TYPE_SIZE + lengthHeaderSize + charsetLength;
+        topic = new String(ArrayUtils.subarray(origin,topicOffset, topicLength),getCharset());
+    }
+
+
+    abstract void readData(byte[] origin);
+
+
+    byte readMessageType(byte[] origin) throws IllegalArgumentException{
+        byte type = origin[0];
+        if (type == MESSAGE_PUBLICATION ||
+                type == MESSAGE_PUBLISH ||
+                type == MESSAGE_SUBSCRIBE ||
+                type == MESSAGE_UNSUBSCRIBE) {
+            return type;
+        } else {
+            throw new IllegalArgumentException("Wrong magic number");
+        }
+    }
+
+
     public abstract byte[] toByteArray() throws UnsupportedEncodingException;
     
     public abstract int getMessageType();
