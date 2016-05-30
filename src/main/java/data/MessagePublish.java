@@ -32,10 +32,11 @@ public class MessagePublish extends Message {
     	this(topic,ArrayUtils.serialize(data));
     }
     
-    public MessagePublish(byte [] origin) throws IllegalArgumentException {
+    public MessagePublish(byte [] origin) throws IllegalArgumentException, UnsupportedEncodingException {
         if(origin==null || origin.length < 1 || readMessageType(origin) != Message.MESSAGE_PUBLISH) {
             throw new IllegalArgumentException("Wrong magic number for " + this.getClass().getName());
         }
+        readHeader(origin);
         readData(origin);
     }
 

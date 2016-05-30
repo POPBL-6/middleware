@@ -56,16 +56,17 @@ public class MessageSubscribe extends Message {
 	}
 
     private int readTopicLength(byte[] origin, int offSet) {
+        int length = 0;
         for(int i = 0 ; i < Integer.BYTES ; i++) {
-            topicLength += (origin[offSet + i] << (Byte.SIZE * i));
+            length += (origin[offSet + i] << (Byte.SIZE * i));
         }
-        return topicLength;
+        return length;
     }
 
 	@Override
 	void readData(byte[] origin) {
-        int dataOffset = MSG_TYPE_SIZE + lengthHeaderSize + charsetLength + topicLengthSize;
-        data = ArrayUtils.subarray(origin, dataOffset, topicLength);
+        int dataOffset = MSG_TYPE_SIZE + lengthHeaderSize + charsetLength;
+        data = ArrayUtils.subarray(origin, dataOffset);
 	}
 
     private void readTopics() throws UnsupportedEncodingException {
