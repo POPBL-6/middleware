@@ -24,7 +24,7 @@ public class TestSocketConnection {
 	Socket socket1, socket2;
 
 	@Rule
-	public Timeout globalTimeout = Timeout.seconds(10);
+	public Timeout globalTimeout = Timeout.seconds(60);
 
 	@Before
 	public void init() throws Exception {
