@@ -12,6 +12,6 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({TestSocketConnection.class})
 public class SocketPkgTestSuite {
     @Rule
-    public Timeout globalTimeout = Timeout.seconds(60);
+    public Timeout globalTimeout = Timeout.seconds(300);
 
 }

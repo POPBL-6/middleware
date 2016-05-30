@@ -15,6 +15,6 @@ import tests.utilstests.UtilsPkgTestSuite;
 public class RunAllTests {
 
     @Rule
-    public Timeout globalTimeout = Timeout.seconds(10);
+    public Timeout globalTimeout = Timeout.seconds(600);
 
 }

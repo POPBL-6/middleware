@@ -80,7 +80,7 @@ public class MessageSubscribe extends Message {
     }
 
 	@Override
-	void readData(byte[] origin) {
+	protected void readData(byte[] origin) {
         int dataOffset = MSG_TYPE_SIZE + lengthHeaderSize + charsetLength;
         data = ArrayUtils.subarray(origin, dataOffset);
 	}

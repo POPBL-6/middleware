@@ -18,13 +18,13 @@ import org.junit.rules.Timeout;
 
 public class TestSocketConnection {
 
-	SocketConnection connection1, connection2;
+	private SocketConnection connection1, connection2;
 	
-	ServerSocket serverSocket;
-	Socket socket1, socket2;
+	private ServerSocket serverSocket;
+	private Socket socket1, socket2;
 
 	@Rule
-	public Timeout globalTimeout = Timeout.seconds(60);
+	public Timeout globalTimeout = Timeout.seconds(300);
 
 	@Before
 	public void init() throws Exception {

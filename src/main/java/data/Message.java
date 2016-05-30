@@ -1,5 +1,7 @@
 package data;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import utils.ArrayUtils;
 
 import java.io.UnsupportedEncodingException;
@@ -8,6 +10,8 @@ import java.io.UnsupportedEncodingException;
  * Abstract class of the messages that are exchange between clients and broker.
  */
 public abstract class Message {
+
+    private static final Logger logger = LogManager.getLogger(Message.class);
 
     public static final byte MESSAGE_PUBLISH = 0;
     public static final byte MESSAGE_PUBLICATION = 1;
@@ -38,10 +42,9 @@ public abstract class Message {
      * @param origin
      * @return message The Message parsed from the provided byte[].
      */
-    public static Message fromByteArray(byte[] origin) {
+    public static Message fromByteArray(byte[] origin) throws UnsupportedEncodingException, IllegalArgumentException {
     	Message msg = null;
     	if ((origin != null) && (origin.length > 0)) {
-    		try {
     			switch (origin[0]) {
         		case MESSAGE_PUBLISH:
         			msg = new MessagePublish(origin);
@@ -55,8 +58,10 @@ public abstract class Message {
     			case MESSAGE_UNSUBSCRIBE:
     				msg = new MessageUnsubscribe(origin);	
     				break;
+                default:
+                    logger.error("Incorrect message type received");
+                    throw new IllegalArgumentException("Incorrect message type received");
         		}
-    		} catch (Exception e) {}
     	}
     	if (msg == null) {
     		throw new IllegalArgumentException("Bad data format");
@@ -75,16 +80,16 @@ public abstract class Message {
      * @param origin Message byte array.
      * @throws UnsupportedEncodingException
      */
-    abstract void readHeader(byte[] origin) throws UnsupportedEncodingException;
+    protected abstract void readHeader(byte[] origin) throws UnsupportedEncodingException;
 
 
     /**
      * Reads the length fields of the message.
      * @param origin Message byte array.
      */
-    abstract void readLengths(byte[] origin);
+    protected abstract void readLengths(byte[] origin);
 
-    void setTopic(String topic) {
+    protected void setTopic(String topic) {
         this.topic = topic;
     }
 
@@ -93,7 +98,7 @@ public abstract class Message {
      * @param origin Message byte array.
      * @throws UnsupportedEncodingException
      */
-    void readCharset(byte[] origin) throws UnsupportedEncodingException {
+    protected void readCharset(byte[] origin) throws UnsupportedEncodingException {
         int charsetOffset = MSG_TYPE_SIZE + lengthHeaderSize;
         charset = new String(ArrayUtils.subarray(origin,charsetOffset ,charsetLength),"ASCII");
     }
@@ -103,7 +108,7 @@ public abstract class Message {
      * @param origin Message byte array.
      * @throws UnsupportedEncodingException
      */
-    void readTopic(byte[] origin) throws UnsupportedEncodingException {
+    protected void readTopic(byte[] origin) throws UnsupportedEncodingException {
         int topicOffset = MSG_TYPE_SIZE + lengthHeaderSize + charsetLength;
         topic = new String(ArrayUtils.subarray(origin,topicOffset, topicLength),getCharset());
     }
@@ -112,7 +117,7 @@ public abstract class Message {
      * Reads the data field of the different message types.
      * @param origin Message byte array.
      */
-    abstract void readData(byte[] origin);
+    protected abstract void readData(byte[] origin);
 
     /**
      * Reads the message type field of the message.
@@ -120,7 +125,7 @@ public abstract class Message {
      * @return The message type.
      * @throws IllegalArgumentException
      */
-    byte readMessageType(byte[] origin) throws IllegalArgumentException{
+    protected byte readMessageType(byte[] origin) throws IllegalArgumentException{
         byte type = origin[0];
         if (type == MESSAGE_PUBLICATION ||
                 type == MESSAGE_PUBLISH ||

@@ -88,6 +88,7 @@ public abstract class PSPortSocket extends Thread implements PSPort {
 					break;
 				default:
 					logger.warn("Unknown message received");
+					break;
 				}
 			}
 		} catch (InterruptedException e) {

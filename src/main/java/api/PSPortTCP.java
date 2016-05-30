@@ -1,15 +1,14 @@
 package api;
 
+import connection.SocketConnection;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Vector;
-
-import connection.SocketConnection;
-import data.MessagePublication;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * API implementation using TCP sockets.
@@ -54,15 +53,20 @@ public class PSPortTCP extends PSPortSocket {
 			for(int i = 1 ; i < configuration.length ; i++) {
 				switch(configuration[i]) {
 				case "-p":
+					port = Integer.valueOf(configuration[++i]);
+					break;
 				case "--port":
 					port = Integer.valueOf(configuration[++i]);
 					break;
 				case "-a":
+					address = configuration[++i];
+					break;
 				case "--address":
 					address = configuration[++i];
 					break;
 				default:
 					logger.warn("Unexpected parameter was found in the configuration");
+					break;
 				}
 			}
 		} catch(Exception e) {

@@ -138,7 +138,7 @@ public class MessagePublish extends Message {
     }
 
     @Override
-    void readData(byte[] origin) {
+    protected void readData(byte[] origin) {
         int dataOffset = MSG_TYPE_SIZE + lengthHeaderSize + charsetLength + topicLength;
         data = ArrayUtils.subarray(origin, dataOffset);
     }
