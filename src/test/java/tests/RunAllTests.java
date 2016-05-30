@@ -16,4 +16,5 @@ public class RunAllTests {
 
     @Rule
     public Timeout globalTimeout = Timeout.seconds(10);
+
 }

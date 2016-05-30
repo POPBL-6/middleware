@@ -11,7 +11,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({MessagesTests.class})
 public class DataPkgTestSuite {
-
     @Rule
     public Timeout globalTimeout = Timeout.seconds(10);
+
 }
