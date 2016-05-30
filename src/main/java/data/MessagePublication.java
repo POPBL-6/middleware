@@ -52,6 +52,7 @@ public class MessagePublication extends MessagePublish {
 
     }
 
+    @Override
 	public void readHeader(byte[] origin) throws UnsupportedEncodingException {
 		readCharset(origin);
 		readLengths(origin);
@@ -62,6 +63,7 @@ public class MessagePublication extends MessagePublish {
 		readData(origin);
 	}
 
+    @Override
 	public void readLengths(byte[] origin) {
         final int charsetLengthOffset = MSG_TYPE_SIZE;
         final int topicLengthOffset = MSG_TYPE_SIZE + Integer.BYTES;
@@ -74,6 +76,11 @@ public class MessagePublication extends MessagePublish {
         lengthHeaderSize = 3 * Integer.BYTES;
 	}
 
+
+    /**
+     * Reads the timestamp field of the message and stores it.
+     * @param origin Message byte array
+     */
 	private void readTimestamp(byte[] origin) {
         int timestampOffset = MSG_TYPE_SIZE + lengthHeaderSize + charsetLength + topicLength + senderIdLength;
 		for(int i = 0 ; i < Long.BYTES ; i++) {
@@ -81,11 +88,17 @@ public class MessagePublication extends MessagePublish {
 		}
 	}
 
+    /**
+     * Reads the sender field of the message and stores it.
+     * @param origin
+     * @throws UnsupportedEncodingException
+     */
 	private void readSender(byte[] origin) throws UnsupportedEncodingException {
         int senderOffset = MSG_TYPE_SIZE + lengthHeaderSize + charsetLength + topicLength;
         sender = new String(ArrayUtils.subarray(origin, senderOffset ,senderIdLength),charset);
     }
 
+    @Override
     void readData(byte[] origin) {
         int dataOffset = MSG_TYPE_SIZE + lengthHeaderSize + charsetLength + topicLength + senderIdLength + timestampLength;
         data = ArrayUtils.subarray(origin, dataOffset);
@@ -97,6 +110,7 @@ public class MessagePublication extends MessagePublish {
      *
      * @return message
      */
+    @Override
     public byte [] toByteArray() throws UnsupportedEncodingException {
     	byte[] out;
 		byte[] charsetBytes = getCharset().getBytes("ASCII");
@@ -121,7 +135,8 @@ public class MessagePublication extends MessagePublish {
 				senderLenBytes,charsetBytes,topicBytes,senderBytes,timestampBytes,getData());
 		return out;
     }
-    
+
+    @Override
     public int getMessageType() {
 		return Message.MESSAGE_PUBLICATION;
 	}
