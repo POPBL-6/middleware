@@ -9,10 +9,12 @@ import java.net.Socket;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
 import connection.SocketConnection;
 import data.MessagePublish;
+import org.junit.rules.Timeout;
 
 public class TestSocketConnection {
 
@@ -20,7 +22,9 @@ public class TestSocketConnection {
 	
 	ServerSocket serverSocket;
 	Socket socket1, socket2;
-	
+
+	@Rule
+	public Timeout globalTimeout = Timeout.seconds(10);
 	@Before
 	public void init() throws Exception {
 		serverSocket = new ServerSocket(5434);
