@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
 import data.Message;
@@ -12,6 +13,7 @@ import data.MessagePublish;
 import data.MessageReader;
 import data.MessageSubscribe;
 import data.MessageUnsubscribe;
+import org.junit.rules.Timeout;
 
 public class MessagesTests {
 	
@@ -19,7 +21,10 @@ public class MessagesTests {
 	MessagePublication msgPublication;
 	MessageSubscribe msgSubscribe;
 	MessageUnsubscribe msgUnsubscribe;
-	
+
+	@Rule
+	public Timeout globalTimeout = Timeout.seconds(10);
+
 	@Before
 	public void init() throws Exception {
 		msgPublish = new MessagePublish("Topic","Object","ASCII");
