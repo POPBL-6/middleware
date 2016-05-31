@@ -9,7 +9,7 @@ import org.junit.runners.Suite;
  * Created by Gorka Olalde on 9/5/16.
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({})
+@Suite.SuiteClasses({PSPortSSLTest.class, PSPortTCPTest.class})
 public class ApiPkgTestSuite {
     @Rule
     public Timeout globalTimeout = Timeout.seconds(10);
