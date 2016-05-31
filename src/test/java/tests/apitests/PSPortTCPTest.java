@@ -15,7 +15,6 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import java.io.IOException;
 import java.net.Socket;
 
-import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertNotNull;
 import static org.powermock.api.easymock.PowerMock.*;
@@ -28,7 +27,7 @@ import static org.powermock.api.easymock.PowerMock.*;
 @PrepareForTest( {PSPortTCP.class} )
 public class PSPortTCPTest {
 
-    PSPort psPortTCP;
+    private PSPort psPortTCP;
 
     @Rule
     public Timeout globalTimeout = Timeout.seconds(30);
@@ -113,5 +112,6 @@ public class PSPortTCPTest {
         replay(SocketConnection.class, Socket.class, connection, socketMock);
         psPortTCP = new PSPortTCP(address, port);
         verify(connection, socketMock);
+        assertNotNull(psPortTCP);
     }
 }

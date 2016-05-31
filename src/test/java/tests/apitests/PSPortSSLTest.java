@@ -32,7 +32,7 @@ import static org.easymock.EasyMock.anyObject;
 @PrepareForTest( {PSPortSSL.class, SocketConnection.class, KeyManagerFactory.class, System.class, KeyStore.class, SSLContext.class, FileInputStream.class} )
 public class PSPortSSLTest {
 
-    PSPort psPortSSL;
+    private PSPort psPortSSL;
 
     @Before
     public void before() {
