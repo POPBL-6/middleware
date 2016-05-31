@@ -25,7 +25,7 @@ import static org.powermock.api.easymock.PowerMock.*;
  */
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore({"javax.management.*"})
-@PrepareForTest( {PSPortTCP.class, SocketConnection.class, Socket.class} )
+@PrepareForTest( {PSPortTCP.class} )
 public class PSPortTCPTest {
 
     PSPort psPortTCP;
@@ -40,7 +40,20 @@ public class PSPortTCPTest {
     }
 
     @Test
-    public void getInstanceTest() throws Exception {
+    public void getInstanceDefaultParams() throws Exception {
+        PSPortTCP retVal = createMock(PSPortTCP.class);
+        //Record
+        expectNew(PSPortTCP.class, "127.0.0.1", 5434).andReturn(retVal);
+        //Play
+        replay(PSPortTCP.class, retVal);
+        psPortTCP = PSPortTCP.getInstance("PSPortTCP");
+        //Verify
+        verify(retVal);
+        assertNotNull(psPortTCP);
+    }
+
+    @Test
+    public void getInstanceReducedParams() throws Exception {
         String params = "PSPortTCP -a 127.0.0.1 -p 1234";
         PSPortTCP retVal = createMock(PSPortTCP.class);
         //Record
