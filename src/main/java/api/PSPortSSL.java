@@ -1,25 +1,21 @@
 package api;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.net.Socket;
-import java.security.KeyManagementException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableKeyException;
-import java.security.cert.CertificateException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Vector;
+import connection.SocketConnection;
+import data.MessagePublication;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
-
-import connection.SocketConnection;
-import data.MessagePublication;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.security.*;
+import java.security.cert.CertificateException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Vector;
 
 /**
  * API implementation using TCP sockets.
@@ -28,9 +24,9 @@ public class PSPortSSL extends PSPortSocket {
 	
 	private static final int CONNECTION_BUFFER_SIZE = 10;
 
-	private Socket socket;
+	private static final Logger logger = LogManager.getLogger(PSPortSSL.class);
 
-    /**
+	/**
      * This constructor creates a SSLSocket to connect to the server.
      *
      * @param address
@@ -59,11 +55,10 @@ public class PSPortSSL extends PSPortSocket {
 		s.setEnabledProtocols(new String[] {protocol});
 	    s.setEnableSessionCreation(true);
 		s.startHandshake();
-		
-    	socket = s;
-    	lastSamples = Collections.synchronizedMap(new HashMap<String, MessagePublication>());
+
+		lastSamples = Collections.synchronizedMap(new HashMap<String, MessagePublication>());
     	listeners = new Vector<TopicListener>();
-    	connection.init(socket, CONNECTION_BUFFER_SIZE);
+    	connection.init(s, CONNECTION_BUFFER_SIZE);
     	this.connection = connection;
     	this.start();
     }
@@ -88,38 +83,53 @@ public class PSPortSSL extends PSPortSocket {
 			for(int i = 1 ; i < configuration.length ; i++) {
 				switch(configuration[i]) {
 				case "-p":
+					port = Integer.valueOf(configuration[++i]);
+					break;
 				case "--port":
 					port = Integer.valueOf(configuration[++i]);
 					break;
 				case "-a":
+					address = configuration[++i];
+					break;
 				case "--address":
 					address = configuration[++i];
 					break;
 				case "-t":
+					trustStore = configuration[++i];
+					break;
 				case "--truststore":
 					trustStore = configuration[++i];
 					break;
 				case "-k":
+					keyStore = configuration[++i];
+					break;
 				case "--keystore":
 					keyStore = configuration[++i];
 					break;
 				case "-kp":
+					keyStorePassword = configuration[++i];
+					break;
 				case "--keyPass":
 					keyStorePassword = configuration[++i];
 					break;
 				case "-pr":
+					protocol = configuration[++i];
+					break;
 				case "--protocol":
 					protocol = configuration[++i];
 					break;
 				case "-c":
+					cipher = configuration[++i];
+					break;
 				case "--cipher":
 					cipher = configuration[++i];
 					break;
 				default:
-					break;
+					logger.warn("Unrecognized parameter: " + configuration[i]);
 				}
 			}
 		} catch(Exception e) {
+			logger.error("An error occurred reading PSPortSSL configuration", e);
 			throw new IllegalArgumentException("Invalid PSPortSSL configuration format");
 		}
 		try {

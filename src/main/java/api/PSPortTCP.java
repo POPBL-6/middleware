@@ -17,10 +17,8 @@ public class PSPortTCP extends PSPortSocket {
 
 	private static final Logger logger = LogManager.getLogger(PSPortSocket.class);
 	public static final int CONNECTION_BUFFER_SIZE = 10;
-	
-	private Socket socket;
 
-    /**
+	/**
      * This constructor creates a TCP socket to connect to the server.
      *
      * @param address
@@ -29,7 +27,7 @@ public class PSPortTCP extends PSPortSocket {
      */
     public PSPortTCP(String address, int port) throws IOException {
     	SocketConnection connection = new SocketConnection();
-    	socket = new Socket(address,port);
+		Socket socket = new Socket(address, port);
     	lastSamples = Collections.synchronizedMap(new HashMap<>());
     	listeners = new Vector<>();
     	connection.init(socket, CONNECTION_BUFFER_SIZE);

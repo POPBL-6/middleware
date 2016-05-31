@@ -9,8 +9,9 @@ import java.io.ObjectOutputStream;
 public class ArrayUtils {
 	public static byte[] toPrimitive(Byte[] in) {
 		byte[] out = new byte[in.length];
-		for(int i = 0 ; i < in.length ; i++)
+		for(int i = 0 ; i < in.length ; i++) {
 			out[i] = in[i];
+		}
 		return out;
 	}
 	public static byte[] subarray(byte[] in, int offset, int length) {
@@ -25,7 +26,8 @@ public class ArrayUtils {
 	}
 	public static byte[] concat(byte[]...arrays) {
 		byte[] concat;
-		int finalLength = 0, contador = 0;
+		int finalLength = 0;
+		int contador = 0;
 		for(int i = 0 ; i < arrays.length ; i++) {
 			finalLength += arrays[i].length;
 		}
@@ -38,7 +40,9 @@ public class ArrayUtils {
 		return concat;
 	}
 	public static boolean compare(byte[] a, byte[] b) {
-		if(a.length != b.length) return false;
+		if(a.length != b.length) {
+			return false;
+		}
 		for(int i = 0 ; i < a.length ; i++) {
 			if(a[i] != b[i]) {
 				return false;

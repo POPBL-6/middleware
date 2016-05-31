@@ -22,8 +22,9 @@ public class PSPortFactory {
 		PSPort port = null;
 		try {
 			String[] conf = configuration.trim().split("[ ]");
-			if(conf[0].equals("file")) return getPort(getConfigurationFromFile(conf[1]));
-			else {
+			if(conf[0].equals("file")) {
+				return getPort(getConfigurationFromFile(conf[1]));
+			} else {
 				if(!conf[0].contains(".")) {
 					configuration = "api." + configuration.trim();
 					conf = configuration.trim().split("[ ]");

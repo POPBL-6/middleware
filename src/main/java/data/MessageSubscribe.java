@@ -13,7 +13,6 @@ import utils.ArrayUtils;
 public class MessageSubscribe extends Message {
 
     private String [] topics;
-    private int topicLengthSize = Integer.BYTES;
 
     public MessageSubscribe(String ... topics) {
     	setCharset(Message.DEFAULT_CHARSET);
