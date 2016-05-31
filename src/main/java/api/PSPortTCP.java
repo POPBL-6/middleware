@@ -18,6 +18,8 @@ public class PSPortTCP extends PSPortSocket {
 	private static final Logger logger = LogManager.getLogger(PSPortSocket.class);
 	public static final int CONNECTION_BUFFER_SIZE = 10;
 
+	private SocketConnection connection;
+	private Socket socket;
 	/**
      * This constructor creates a TCP socket to connect to the server.
      *
@@ -26,12 +28,11 @@ public class PSPortTCP extends PSPortSocket {
      * @throws IOException 
      */
     public PSPortTCP(String address, int port) throws IOException {
-    	SocketConnection connection = new SocketConnection();
-		Socket socket = new Socket(address, port);
+		connection = new SocketConnection();
+		socket = new Socket(address, port);
     	lastSamples = Collections.synchronizedMap(new HashMap<>());
     	listeners = new Vector<>();
     	connection.init(socket, CONNECTION_BUFFER_SIZE);
-    	this.connection = connection;
     	this.start();
 		logger.info("TCP listener started");
     }
