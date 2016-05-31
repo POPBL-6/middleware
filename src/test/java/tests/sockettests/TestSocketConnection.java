@@ -23,8 +23,6 @@ public class TestSocketConnection {
 	private ServerSocket serverSocket;
 	private Socket socket1, socket2;
 
-	@Rule
-	public Timeout globalTimeout = Timeout.seconds(300);
 
 	@Before
 	public void init() throws Exception {

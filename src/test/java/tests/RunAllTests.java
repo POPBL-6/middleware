@@ -14,7 +14,6 @@ import tests.utilstests.UtilsPkgTestSuite;
 @SuiteClasses({ApiPkgTestSuite.class, DataPkgTestSuite.class, SocketPkgTestSuite.class, UtilsPkgTestSuite.class})
 public class RunAllTests {
 
-    @Rule
-    public Timeout globalTimeout = Timeout.seconds(600);
+
 
 }

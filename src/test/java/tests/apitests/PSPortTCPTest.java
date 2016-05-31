@@ -4,7 +4,9 @@ import api.PSPort;
 import api.PSPortTCP;
 import connection.SocketConnection;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.Timeout;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -27,6 +29,10 @@ import static org.powermock.api.easymock.PowerMock.*;
 public class PSPortTCPTest {
 
     PSPort psPortTCP;
+
+    @Rule
+    public Timeout globalTimeout = Timeout.seconds(30);
+
 
     @Before
     public void before() throws IOException {
