@@ -41,7 +41,7 @@ public class TestSocketConnection {
 		connection2.init(socket2, 10);
 	}
 	
-	@Test
+	@Test(timeout = 10000)
 	public void testSendAndReceiveMessage() throws Exception {
 		MessagePublish message1 = new MessagePublish("Topic","Data");
 		connection1.writeMessage(message1);
