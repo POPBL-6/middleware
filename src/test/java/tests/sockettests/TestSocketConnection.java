@@ -8,7 +8,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import connection.SocketConnection;
@@ -21,8 +20,6 @@ public class TestSocketConnection {
 	private ServerSocket serverSocket;
 	private Socket socket1, socket2;
 
-
-	@Before
 	public void init() throws Exception {
 		serverSocket = new ServerSocket(5434);
 		new Thread() {
@@ -41,8 +38,9 @@ public class TestSocketConnection {
 		connection2.init(socket2, 10);
 	}
 	
-	@Test
+	@Test(timeout = 10000)
 	public void testSendAndReceiveMessage() throws Exception {
+		init();
 		MessagePublish message1 = new MessagePublish("Topic","Data");
 		connection1.writeMessage(message1);
 		MessagePublish message2 = (MessagePublish) connection2.readMessage();

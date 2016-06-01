@@ -1,5 +1,7 @@
 package tests.sockettests;
 
+import org.junit.Rule;
+import org.junit.rules.Timeout;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -9,6 +11,6 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({TestSocketConnection.class})
 public class SocketPkgTestSuite {
-
-
+	@Rule
+    public Timeout globalTimeout = Timeout.seconds(10);
 }
