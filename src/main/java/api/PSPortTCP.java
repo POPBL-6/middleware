@@ -6,19 +6,20 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Vector;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import connection.SocketConnection;
-import data.MessagePublication;
 
 /**
  * API implementation using TCP sockets.
  */
 public class PSPortTCP extends PSPortSocket {
-	
+
+	private static final Logger logger = LogManager.getLogger(PSPortSocket.class);
 	public static final int CONNECTION_BUFFER_SIZE = 10;
 	
-	Socket socket;
-
-    /**
+	/**
      * This constructor creates a TCP socket to connect to the server.
      *
      * @param address
@@ -26,13 +27,13 @@ public class PSPortTCP extends PSPortSocket {
      * @throws IOException 
      */
     public PSPortTCP(String address, int port) throws IOException {
-    	SocketConnection connection = new SocketConnection();
-    	socket = new Socket(address,port);
-    	lastSamples = Collections.synchronizedMap(new HashMap<String, MessagePublication>());
-    	listeners = new Vector<TopicListener>();
+		connection = new SocketConnection();
+		Socket socket = new Socket(address, port);
+    	lastSamples = Collections.synchronizedMap(new HashMap<>());
+    	listeners = new Vector<>();
     	connection.init(socket, CONNECTION_BUFFER_SIZE);
-    	this.connection = connection;
     	this.start();
+		logger.info("TCP listener started");
     }
     
     /**
@@ -50,16 +51,24 @@ public class PSPortTCP extends PSPortSocket {
 			for(int i = 1 ; i < configuration.length ; i++) {
 				switch(configuration[i]) {
 				case "-p":
+					port = Integer.valueOf(configuration[++i]);
+					break;
 				case "--port":
 					port = Integer.valueOf(configuration[++i]);
 					break;
 				case "-a":
+					address = configuration[++i];
+					break;
 				case "--address":
 					address = configuration[++i];
+					break;
+				default:
+					logger.warn("Unexpected parameter was found in the configuration");
 					break;
 				}
 			}
 		} catch(Exception e) {
+			logger.error("An error occurred when reading the configuration", e);
 			throw new IllegalArgumentException("Invalid PSPortTCP configuration format");
 		}
 		return new PSPortTCP(address,port);

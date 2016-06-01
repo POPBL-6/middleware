@@ -22,8 +22,9 @@ public class PSPortFactory {
 		PSPort port = null;
 		try {
 			String[] conf = configuration.trim().split("[ ]");
-			if(conf[0].equals("file")) return getPort(getConfigurationFromFile(conf[1]));
-			else {
+			if(conf[0].equals("file")) {
+				return getPort(getConfigurationFromFile(conf[1]));
+			} else {
 				if(!conf[0].contains(".")) {
 					configuration = "api." + configuration.trim();
 					conf = configuration.trim().split("[ ]");
@@ -41,6 +42,13 @@ public class PSPortFactory {
 		}
 		return port;
 	}
+	
+	/**
+	 * Reads and returns the first line of the specified file.
+	 * @param filename
+	 * @return The configuration read from the file.
+	 * @throws FileNotFoundException
+	 */
 	public static String getConfigurationFromFile(String filename) throws FileNotFoundException {
 		Scanner s = new Scanner(new FileInputStream(filename));
 		String config = s.nextLine();

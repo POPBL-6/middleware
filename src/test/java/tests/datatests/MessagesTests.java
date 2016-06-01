@@ -1,10 +1,12 @@
-package tests.dataTests;
+package tests.datatests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.Timeout;
 
 import data.Message;
 import data.MessagePublication;
@@ -15,11 +17,14 @@ import data.MessageUnsubscribe;
 
 public class MessagesTests {
 	
-	MessagePublish msgPublish;
-	MessagePublication msgPublication;
-	MessageSubscribe msgSubscribe;
-	MessageUnsubscribe msgUnsubscribe;
-	
+	private MessagePublish msgPublish;
+	private MessagePublication msgPublication;
+	private MessageSubscribe msgSubscribe;
+	private MessageUnsubscribe msgUnsubscribe;
+
+	@Rule
+	public Timeout globalTimeout = Timeout.seconds(10);
+
 	@Before
 	public void init() throws Exception {
 		msgPublish = new MessagePublish("Topic","Object","ASCII");

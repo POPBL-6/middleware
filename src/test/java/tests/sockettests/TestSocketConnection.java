@@ -1,4 +1,4 @@
-package tests.socketTests;
+package tests.sockettests;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -16,11 +16,12 @@ import data.MessagePublish;
 
 public class TestSocketConnection {
 
-	SocketConnection connection1, connection2;
+	private SocketConnection connection1, connection2;
 	
-	ServerSocket serverSocket;
-	Socket socket1, socket2;
-	
+	private ServerSocket serverSocket;
+	private Socket socket1, socket2;
+
+
 	@Before
 	public void init() throws Exception {
 		serverSocket = new ServerSocket(5434);
