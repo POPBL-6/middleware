@@ -1,17 +1,18 @@
 package tests.sockettests;
 
-import connection.SocketConnection;
-import data.MessagePublish;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import connection.SocketConnection;
+import data.MessagePublish;
 
 public class TestSocketConnection {
 

@@ -1,8 +1,26 @@
 package tests.apitests;
 
-import api.PSPort;
-import api.PSPortSSL;
-import connection.SocketConnection;
+import static org.easymock.EasyMock.anyObject;
+import static org.easymock.EasyMock.aryEq;
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
+import static org.junit.Assert.assertNotNull;
+import static org.powermock.api.easymock.PowerMock.createMock;
+import static org.powermock.api.easymock.PowerMock.expectNew;
+import static org.powermock.api.easymock.PowerMock.mockStatic;
+import static org.powermock.api.easymock.PowerMock.replay;
+import static org.powermock.api.easymock.PowerMock.verify;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.security.KeyStore;
+
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,20 +28,9 @@ import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import javax.net.ssl.*;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.security.KeyStore;
-import static org.junit.Assert.assertNotNull;
-import static org.powermock.api.easymock.PowerMock.createMock;
-import static org.powermock.api.easymock.PowerMock.mockStatic;
-import static org.powermock.api.easymock.PowerMock.replay;
-import static org.powermock.api.easymock.PowerMock.verify;
-import static org.powermock.api.easymock.PowerMock.expectNew;
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.aryEq;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.anyObject;
+import api.PSPort;
+import api.PSPortSSL;
+import connection.SocketConnection;
 /**
  * Created by Gorka Olalde on 31/5/16.
  */

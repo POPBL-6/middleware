@@ -1,14 +1,15 @@
 package api;
 
-import connection.SocketConnection;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Vector;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import connection.SocketConnection;
 
 /**
  * API implementation using TCP sockets.
@@ -17,9 +18,7 @@ public class PSPortTCP extends PSPortSocket {
 
 	private static final Logger logger = LogManager.getLogger(PSPortSocket.class);
 	public static final int CONNECTION_BUFFER_SIZE = 10;
-
-	private SocketConnection connection;
-	private Socket socket;
+	
 	/**
      * This constructor creates a TCP socket to connect to the server.
      *
@@ -29,7 +28,7 @@ public class PSPortTCP extends PSPortSocket {
      */
     public PSPortTCP(String address, int port) throws IOException {
 		connection = new SocketConnection();
-		socket = new Socket(address, port);
+		Socket socket = new Socket(address, port);
     	lastSamples = Collections.synchronizedMap(new HashMap<>());
     	listeners = new Vector<>();
     	connection.init(socket, CONNECTION_BUFFER_SIZE);

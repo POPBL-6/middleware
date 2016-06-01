@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.Timeout;
 
 import data.Message;
 import data.MessagePublication;
@@ -13,7 +14,6 @@ import data.MessagePublish;
 import data.MessageReader;
 import data.MessageSubscribe;
 import data.MessageUnsubscribe;
-import org.junit.rules.Timeout;
 
 public class MessagesTests {
 	
