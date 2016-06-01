@@ -1,10 +1,11 @@
 package data;
 
+import java.io.UnsupportedEncodingException;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utils.ArrayUtils;
 
-import java.io.UnsupportedEncodingException;
+import utils.ArrayUtils;
 
 /**
  * Abstract class of the messages that are exchange between clients and broker.

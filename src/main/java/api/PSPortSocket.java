@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import connection.Connection;
+import connection.SocketConnection;
 import data.Message;
 import data.MessagePublication;
 import data.MessagePublish;
@@ -20,7 +21,7 @@ public abstract class PSPortSocket extends Thread implements PSPort {
 
     private static final Logger logger = LogManager.getLogger(PSPortSocket.class);
 
-    protected Connection connection;
+    protected SocketConnection connection;
     protected Map<String, MessagePublication> lastSamples;
     protected Vector<TopicListener> listeners;
     
@@ -193,7 +194,7 @@ public abstract class PSPortSocket extends Thread implements PSPort {
      * Sets the connection used by this PSPort.
      * @param connection The new connection to be used.
      */
-    protected void setConnection(Connection connection) {
+    protected void setConnection(SocketConnection connection) {
         this.connection = connection;
     }
 }

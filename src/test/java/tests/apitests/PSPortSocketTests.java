@@ -1,13 +1,19 @@
 package tests.apitests;
 
-import api.PSPortSocket;
-import api.TopicListener;
-import connection.Connection;
-import data.MessagePublication;
-import data.MessagePublish;
-import data.MessageSubscribe;
-import data.MessageUnsubscribe;
-import org.apache.logging.log4j.Logger;
+import static org.easymock.EasyMock.capture;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.EasyMock.newCapture;
+import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.powermock.api.easymock.PowerMock.replay;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Vector;
+
 import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.junit.Before;
@@ -19,15 +25,14 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Vector;
-import java.util.concurrent.ExecutionException;
-
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.powermock.api.easymock.PowerMock.replay;
+import api.PSPortSocket;
+import api.TopicListener;
+import connection.Connection;
+import connection.SocketConnection;
+import data.MessagePublication;
+import data.MessagePublish;
+import data.MessageSubscribe;
+import data.MessageUnsubscribe;
 
 /**
  * Created by Gorka Olalde on 1/6/16.
@@ -51,7 +56,7 @@ public class PSPortSocketTests {
                 super.addTopicListener(listener);
             }
         };
-        connection = createMock(Connection.class);
+        connection = createMock(SocketConnection.class);
         lastSamples = new HashMap<>();
         listeners = new Vector<>();
         topicListener = createMock(TopicListener.class);

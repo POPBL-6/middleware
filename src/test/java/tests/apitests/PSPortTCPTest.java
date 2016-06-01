@@ -1,8 +1,14 @@
 package tests.apitests;
 
-import api.PSPort;
-import api.PSPortTCP;
-import connection.SocketConnection;
+import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertNotNull;
+import static org.powermock.api.easymock.PowerMock.createMock;
+import static org.powermock.api.easymock.PowerMock.expectNew;
+import static org.powermock.api.easymock.PowerMock.replay;
+
+import java.io.IOException;
+import java.net.Socket;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -12,12 +18,9 @@ import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.io.IOException;
-import java.net.Socket;
-
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertNotNull;
-import static org.powermock.api.easymock.PowerMock.*;
+import api.PSPort;
+import api.PSPortTCP;
+import connection.SocketConnection;
 
 /**
  * Created by Gorka Olalde on 31/5/16.
