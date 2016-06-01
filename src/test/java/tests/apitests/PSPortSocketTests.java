@@ -1,5 +1,6 @@
 package tests.apitests;
 
+<<<<<<< Updated upstream
 import static org.easymock.EasyMock.capture;
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
@@ -14,6 +15,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
+=======
+import api.PSPortSocket;
+import api.TopicListener;
+import connection.Connection;
+import data.MessagePublication;
+import data.MessagePublish;
+import data.MessageSubscribe;
+import data.MessageUnsubscribe;
+>>>>>>> Stashed changes
 import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.junit.Before;
@@ -25,6 +35,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
+<<<<<<< Updated upstream
 import api.PSPortSocket;
 import api.TopicListener;
 import connection.Connection;
@@ -33,6 +44,16 @@ import data.MessagePublication;
 import data.MessagePublish;
 import data.MessageSubscribe;
 import data.MessageUnsubscribe;
+=======
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Vector;
+
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.powermock.api.easymock.PowerMock.replay;
+>>>>>>> Stashed changes
 
 /**
  * Created by Gorka Olalde on 1/6/16.
