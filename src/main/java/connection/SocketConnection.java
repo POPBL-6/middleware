@@ -12,7 +12,6 @@ import org.apache.logging.log4j.Logger;
 
 import utils.ArrayUtils;
 import data.Message;
-import data.MessageSubscribe;
 
 /**
  * Connection implementation that uses Sockets.
@@ -25,6 +24,9 @@ public class SocketConnection implements Connection {
 	
 	public static final String DEFAULT_ADDRESS = "127.0.0.1";
 	public static final int DEFAULT_PORT = 5434;
+	
+	private Thread readingThread, writingThread;
+	private Thread interruptOnClose;
 	
 	private Socket socket;
 	private BlockingQueue<Message> messagesIn, messagesOut;
@@ -44,8 +46,8 @@ public class SocketConnection implements Connection {
 		this.socket = socket;
 		this.messagesIn = messagesIn;
 		this.messagesOut = messagesOut;
-		Thread readingThread = new Thread(() -> readingTask());
-		Thread writingThread = new Thread(() -> sendingTask());
+		readingThread = new Thread(() -> readingTask());
+		writingThread = new Thread(() -> sendingTask());
 		readingThread.start();
 		writingThread.start();
 	}
@@ -91,7 +93,7 @@ public class SocketConnection implements Connection {
 			}
 		}  catch(Exception e) {
 			if(!isClosed()) {
-				logger.warn("Exception thrown on receiver thread", e);
+				logger.warn("Exception thrown on receiver thread " + e.getClass().getName() + ": " + e.getMessage());
 			}
 		}
 		close();
@@ -116,7 +118,7 @@ public class SocketConnection implements Connection {
 				out.write(send);
 			}
 		}  catch(Exception e) {
-			logger.warn("Exception thrown on sender thread", e);
+			logger.warn("Exception thrown on sender thread " + e.getClass().getName() + ": " + e.getMessage());
 			if(!isClosed()) {
 				close();
 			}
@@ -150,8 +152,9 @@ public class SocketConnection implements Connection {
 				logger.info("Closing SocketConnection");
 				closed = true;
 				socket.close();
-				messagesIn.offer(new MessageSubscribe());
-				messagesOut.offer(new MessageSubscribe());
+				readingThread.interrupt();
+				writingThread.interrupt();
+				interruptOnClose.interrupt();
 			}
 		} catch(Exception e) {}
 	}
@@ -191,6 +194,16 @@ public class SocketConnection implements Connection {
 	 */
 	public String getConnectionId() {
 		return id;
+	}
+
+	/**
+	 * Makes sure this the provided Thread will be interrupted
+	 * when this SocketConnection is closed.
+	 * 
+	 * @param thread The Thread that must be interrupted
+	 */
+	public void setThreadToInterrupt(Thread thread) {
+		interruptOnClose = thread;
 	}
 	
 }

@@ -49,4 +49,12 @@ public interface Connection {
 	 */
 	boolean isClosed();
 	
+	/**
+	 * Makes sure this the provided Thread will be interrupted
+	 * when this Connection is closed.
+	 * 
+	 * @param thread The Thread that must be interrupted
+	 */
+	void setThreadToInterrupt(Thread thread);
+	
 }
