@@ -6,6 +6,7 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.Semaphore;
 
 import org.junit.After;
 import org.junit.Test;
@@ -19,18 +20,25 @@ public class TestSocketConnection {
 	
 	private ServerSocket serverSocket;
 	private Socket socket1, socket2;
+	private Semaphore semaphore;
 
 	public void init() throws Exception {
+		semaphore = new Semaphore(0);
 		serverSocket = new ServerSocket(5434);
+		
 		new Thread() {
 			public void run() {
 				try {
+					semaphore.release();
 					socket2 = serverSocket.accept();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
 		}.start();
+		
+		semaphore.acquire();
+		Thread.sleep(1000);
 		socket1 = new Socket("127.0.0.1",5434);
 		connection1 = new SocketConnection();
 		connection2 = new SocketConnection();
