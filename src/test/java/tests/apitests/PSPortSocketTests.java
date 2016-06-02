@@ -177,6 +177,8 @@ public class PSPortSocketTests {
         Capture<MessagePublication> messagePublicationCapture = newCapture();
         listeners.add(topicListener);
         //Record
+        connection.setThreadToInterrupt(psPortSocket);
+        expectLastCall();
         expect(connection.isClosed()).andReturn(false);
         expect(connection.readMessage()).andReturn(messagePublication);
         topicListener.publicationReceived(capture(messagePublicationCapture));
@@ -197,6 +199,8 @@ public class PSPortSocketTests {
         psPortSocket = PowerMock.createPartialMock(PSPortSocket.class, "manageMessagePublish");
         Whitebox.setInternalState(psPortSocket, "connection", connection);
         //Record
+        connection.setThreadToInterrupt(psPortSocket);
+        expectLastCall();
         expect(connection.isClosed()).andReturn(false);
         expect(connection.readMessage()).andReturn(messagePublish);
         Whitebox.invokeMethod(psPortSocket, "manageMessagePublish", messagePublish);
@@ -215,6 +219,8 @@ public class PSPortSocketTests {
         psPortSocket = PowerMock.createPartialMock(PSPortSocket.class, "manageMessageSubscribe");
         Whitebox.setInternalState(psPortSocket, "connection", connection);
         //Record
+        connection.setThreadToInterrupt(psPortSocket);
+        expectLastCall();
         expect(connection.isClosed()).andReturn(false);
         expect(connection.readMessage()).andReturn(messageSubscribe);
         Whitebox.invokeMethod(psPortSocket, "manageMessageSubscribe", messageSubscribe);
@@ -233,6 +239,8 @@ public class PSPortSocketTests {
         psPortSocket = PowerMock.createPartialMock(PSPortSocket.class, "manageMessageUnsubscribe");
         Whitebox.setInternalState(psPortSocket, "connection", connection);
         //Record
+        connection.setThreadToInterrupt(psPortSocket);
+        expectLastCall();
         expect(connection.isClosed()).andReturn(false);
         expect(connection.readMessage()).andReturn(messageUnsubscribe);
         Whitebox.invokeMethod(psPortSocket, "manageMessageUnsubscribe", messageUnsubscribe);
@@ -250,6 +258,8 @@ public class PSPortSocketTests {
         int badMsgType = 10;
         MessageSubscribe messageSubscribe = PowerMock.createPartialMock(MessageSubscribe.class, "getMessageType");
         //Record
+        connection.setThreadToInterrupt(psPortSocket);
+        expectLastCall();
         expect(connection.isClosed()).andReturn(false);
         expect(connection.readMessage()).andReturn(messageSubscribe);
         expect(messageSubscribe.getMessageType()).andReturn(badMsgType);
@@ -265,6 +275,8 @@ public class PSPortSocketTests {
     @Test
     public void threadRunInterrupted() throws InterruptedException {
         //Record
+    	connection.setThreadToInterrupt(psPortSocket);
+        expectLastCall();
         expect(connection.isClosed()).andReturn(false);
         expect(connection.readMessage()).andThrow(new InterruptedException());
         connection.close();
@@ -278,6 +290,8 @@ public class PSPortSocketTests {
     @Test
     public void threadRunNullMessage() throws InterruptedException {
         //Record
+    	connection.setThreadToInterrupt(psPortSocket);
+        expectLastCall();
         expect(connection.isClosed()).andReturn(false);
         expect(connection.readMessage()).andReturn(null);
         connection.close();

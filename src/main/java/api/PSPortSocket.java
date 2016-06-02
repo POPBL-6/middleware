@@ -71,6 +71,7 @@ public abstract class PSPortSocket extends Thread implements PSPort {
      */
     public void run() {
     	try {
+    		connection.setThreadToInterrupt(this);
 			while(!connection.isClosed()) {
 				Message message = connection.readMessage();
 				logger.info("Message received");
