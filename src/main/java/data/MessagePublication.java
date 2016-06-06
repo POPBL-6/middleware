@@ -1,6 +1,7 @@
 package data;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
 
 import utils.ArrayUtils;
 
@@ -83,9 +84,12 @@ public class MessagePublication extends MessagePublish {
      */
 	private void readTimestamp(byte[] origin) {
         int timestampOffset = MSG_TYPE_SIZE + lengthHeaderSize + charsetLength + topicLength + senderIdLength;
-		for(int i = 0 ; i < Long.BYTES ; i++) {
-			timestamp += (origin[i + timestampOffset] << (Byte.SIZE * i));
-		}
+        
+        ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
+        buffer.put(ArrayUtils.subarray(origin, timestampOffset, Long.BYTES));
+        buffer.flip();
+        
+        timestamp = buffer.getLong();
 	}
 
     /**
@@ -128,9 +132,9 @@ public class MessagePublication extends MessagePublish {
 			topicLenBytes[i] = (byte)(topicLen >> (Byte.SIZE * i));
 			senderLenBytes[i] = (byte)(senderLen >> (Byte.SIZE * i));
 		}
-		for(int i = 0 ; i < Long.BYTES ; i++) {
-			timestampBytes[i] = (byte)(timestamp >> (Byte.SIZE * i));
-		}
+		ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
+        buffer.putLong(timestamp);
+        timestampBytes = buffer.array();
 		out = ArrayUtils.concat(new byte[]{Message.MESSAGE_PUBLICATION}, charsetLenBytes,topicLenBytes,
 				senderLenBytes,charsetBytes,topicBytes,senderBytes,timestampBytes,getData());
 		return out;
