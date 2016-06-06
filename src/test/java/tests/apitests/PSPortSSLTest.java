@@ -54,7 +54,7 @@ public class PSPortSSLTest {
         String keyStore = ".keystore";
         String keyStorePassword = "snowflake";
         String protocol = "TLSv1.2";
-        String cipher = "TLS_DHE_DSS_WITH_AES_128_CBC_SHA256";
+        String cipher = "TLS_RSA_WITH_AES_128_CBC_SHA256";
         PSPortSSL retVal = createMock(PSPortSSL.class);
         //Record
         expectNew(
@@ -108,7 +108,7 @@ public class PSPortSSLTest {
         String params = "PSPortSSL  --address 127.0.0.1 --port 1234 --badarg test";
         PSPortSSL retVal = createMock(PSPortSSL.class);
         //Record
-        expectNew(PSPortSSL.class, "127.0.0.1", 1234, ".keystore", ".keystore", "snowflake", "TLSv1.2", "TLS_DHE_DSS_WITH_AES_128_CBC_SHA256").andReturn(retVal);
+        expectNew(PSPortSSL.class, "127.0.0.1", 1234, ".keystore", ".keystore", "snowflake", "TLSv1.2", "TLS_RSA_WITH_AES_128_CBC_SHA256").andReturn(retVal);
         replay(PSPortSSL.class, retVal);
         psPortSSL = PSPortSSL.getInstance(params);
         //Verify
