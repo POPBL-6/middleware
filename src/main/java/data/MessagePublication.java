@@ -7,6 +7,7 @@ import utils.ArrayUtils;
 
 /**
  * Message sent from the broker to the subscriber with the publication from the publisher.
+ * Should be created by the Broker and read by the Middleware users.
  */
 public class MessagePublication extends MessagePublish {
 
@@ -34,6 +35,7 @@ public class MessagePublication extends MessagePublish {
 
     /**
      * This constructor completes the message to be sent to the sender.
+     * Meant to be used by the MessagesManager of the Broker.
      *
      * @param messagePublish
      * @param sender
@@ -43,6 +45,14 @@ public class MessagePublication extends MessagePublish {
         this(messagePublish.getCharset(), messagePublish.getData(), messagePublish.getTopic(), sender,timestamp);
     }
 
+    /**
+     * This constructor completes the message sent to the sender.
+     * Used to deserialize a MessagePublication.
+     * 
+     * @param origin
+     * @throws IllegalArgumentException
+     * @throws UnsupportedEncodingException
+     */
     public MessagePublication(byte [] origin) throws IllegalArgumentException, UnsupportedEncodingException {
 		
 		if(origin==null || origin.length<1 || origin[0]!=Message.MESSAGE_PUBLICATION) {
@@ -110,7 +120,8 @@ public class MessagePublication extends MessagePublish {
 
 
     /**
-     * Structure of the message: <TM><CL><TL><SL><CHARSET><TOPIC><SENDER><TIMESTAMP><DATA>
+     * Serializes this Message.
+     * Structure of the message: [TM][CL][TL][SL][CHARSET][TOPIC][SENDER][TIMESTAMP][DATA]
      *
      * @return message
      */
