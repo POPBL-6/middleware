@@ -37,7 +37,7 @@ public class MessagePublish extends Message {
     }
 
     /**
-     * Constructor to create a publish message from a topic, the data stored in it's object, and the charset for the fields.
+     * Constructor to create a publish message from a topic, data object, and the charset for the Strings.
      * @param topic The topic of the message.
      * @param data The data of the message stored in it's object form.
      * @param charset The charset for the fields of the message.
@@ -48,7 +48,7 @@ public class MessagePublish extends Message {
     }
 
     /**
-     * Constructor to create a publish messag from the topic and the data in it's object format.
+     * Constructor to create a publish message from the topic and the data object.
      * @param topic The topic of the message.
      * @param data The data stored in it's object form.
      * @throws IOException Is thrown if the object can't be serialized.
@@ -58,8 +58,11 @@ public class MessagePublish extends Message {
     }
 
     /**
+     * <b><p>Not to be used by Middleware users to publish data!!</p>
+     * <p>Use the constructors with 2 or more parameters for that.</p></b>
      * Builds a publish message from the data received in it's plain byte form.
-     * @param origin The message in the byte array.
+     * 
+     * @param origin The serialized MessagePublish.
      * @throws IllegalArgumentException Is thrown if the message type is not the correct one.
      * @throws UnsupportedEncodingException Is thrown if the selected charset is not known.
      */

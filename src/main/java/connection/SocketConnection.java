@@ -151,6 +151,7 @@ public class SocketConnection implements Connection {
 			if(socket!=null) {
 				logger.info("Closing SocketConnection");
 				closed = true;
+				Thread.sleep(2000);
 				socket.close();
 				readingThread.interrupt();
 				writingThread.interrupt();

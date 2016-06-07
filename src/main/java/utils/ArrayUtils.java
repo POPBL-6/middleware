@@ -6,7 +6,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-public class ArrayUtils {
+/**
+ * Useful stuff.
+ */
+public abstract class ArrayUtils {
 	public static byte[] toPrimitive(Byte[] in) {
 		byte[] out = new byte[in.length];
 		for(int i = 0 ; i < in.length ; i++) {
@@ -38,17 +41,6 @@ public class ArrayUtils {
 			}
 		}
 		return concat;
-	}
-	public static boolean compare(byte[] a, byte[] b) {
-		if(a.length != b.length) {
-			return false;
-		}
-		for(int i = 0 ; i < a.length ; i++) {
-			if(a[i] != b[i]) {
-				return false;
-			}
-		}
-		return true;
 	}
 	public static byte[] serialize(Object obj) throws IOException {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
