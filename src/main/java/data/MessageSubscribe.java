@@ -105,7 +105,7 @@ public class MessageSubscribe extends Message {
     }
 
 	/**
-     * Structure of the message: <TM><CL><CHARSET>(<TL><TOPIC>)
+     * Structure of the message: [TM][CL][CHARSET]([TL][TOPIC])
      *
      * @return message
      */

@@ -147,7 +147,7 @@ public class MessagePublish extends Message {
     }
 
     /**
-     * Structure of the message: <TM><CL><TL><CHARSET><TOPIC><DATA>
+     * Structure of the message: [TM][CL][TL][CHARSET][TOPIC][DATA]
      *
      * @return message
      * @throws Exception 
