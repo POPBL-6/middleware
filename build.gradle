@@ -42,6 +42,7 @@ test {
 task middlewareDocs (type:Javadoc) {
 	source = sourceSets.main.allJava
 	failOnError = false
+    options.memberLevel = JavadocMemberLevel.PRIVATE
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
